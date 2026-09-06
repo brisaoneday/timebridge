@@ -11,7 +11,21 @@ const COLOR_PRESETS = [
   "oklch(60% 0.12 190)",
   "oklch(58% 0.16 340)",
   "oklch(55% 0.02 260)",
+  // Pastel variants (lighter, softer versions of the colors above)
+  "oklch(82% 0.07 250)",
+  "oklch(85% 0.08 70)",
+  "oklch(82% 0.08 150)",
+  "oklch(82% 0.06 190)",
+  "oklch(84% 0.08 340)",
+  "oklch(80% 0.01 260)",
 ];
+
+// Swatches lighter than this read poorly with a white checkmark; use a dark one instead.
+function contrastStroke(oklchColor) {
+  const m = oklchColor.match(/oklch\((\d+)%/);
+  const lightness = m ? parseInt(m[1], 10) : 50;
+  return lightness >= 70 ? "oklch(25% 0.02 260)" : "white";
+}
 
 const BASE_CURRENCY = "GTQ";
 const CURRENCY_PRESETS = [
@@ -25,14 +39,14 @@ const INCOME_CATS = ["급여", "사업", "용돈", "송금", "기타"];
 const ACCOUNT_TYPES = ["은행", "카드", "현금", "기타"];
 
 const TZ_PRESETS = [
-  { tz: "America/Guatemala", label: "과테말라시티" },
-  { tz: "Asia/Seoul", label: "한국 · 서울" },
-  { tz: "America/Mexico_City", label: "멕시코시티" },
-  { tz: "America/Los_Angeles", label: "미국 · LA" },
-  { tz: "America/New_York", label: "미국 · 뉴욕" },
-  { tz: "Europe/Madrid", label: "스페인 · 마드리드" },
-  { tz: "Asia/Tokyo", label: "일본 · 도쿄" },
-  { tz: "Asia/Manila", label: "필리핀 · 마닐라" },
+  { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
+  { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
+  { tz: "America/Mexico_City", label: "멕시코시티", flag: "🇲🇽" },
+  { tz: "America/Los_Angeles", label: "미국 · LA", flag: "🇺🇸" },
+  { tz: "America/New_York", label: "미국 · 뉴욕", flag: "🇺🇸" },
+  { tz: "Europe/Madrid", label: "스페인 · 마드리드", flag: "🇪🇸" },
+  { tz: "Asia/Tokyo", label: "일본 · 도쿄", flag: "🇯🇵" },
+  { tz: "Asia/Manila", label: "필리핀 · 마닐라", flag: "🇵🇭" },
 ];
 
 const LANG_LOCALE = { ko: "ko-KR", en: "en-US", es: "es-GT" };
@@ -48,13 +62,18 @@ const I18N = {
     section_overdue: "지난", section_today: "오늘", section_week: "이번 주", section_later: "다음", section_done: "완료됨",
     chip_all: "전체", delta_hours: "{sign}{n}시간",
     today_badge: "오늘",
-    week_empty: "일정 없음",
     cal_empty: "이 날짜엔 등록된 업무가 없어요.",
     cal_month: "월", cal_week: "주",
     hub_title: "더보기",
     hub_report_name: "보고현황", hub_report_manage: "지파·부서 관리", hub_report_stat: "{done}/{total} 완료",
     hub_money_name: "가계부", hub_money_stat: "이번 달 {amt}",
     hub_diary_name: "기록", hub_diary_recent: "최근 · {date}", hub_diary_none: "기록 없음",
+    hub_goals_name: "목표", hub_goals_stat: "{done}/{total} 달성", hub_goals_manage: "목표 설정하기",
+    goals_title: "목표", goal_new: "새 목표", goal_edit: "목표 수정",
+    field_target_date: "목표일", ph_goal_title: "예: 스페인어 자격증 취득, 신학교 졸업",
+    goals_empty: "아직 등록된 목표가 없어요. + 버튼으로 첫 목표를 적어보세요.",
+    goal_achieved_badge: "달성!",
+    toast_goal_added: "목표를 추가했어요", toast_goal_updated: "목표를 수정했어요", toast_goal_deleted: "목표를 삭제했어요",
     report_title: "지파·부서 보고 현황",
     report_month_collect: "이번 달 보고 취합", report_done_of: "{done} / {total} 완료",
     report_days_left: "마감까지 {n}일 남음 · ", report_pending_count: "미제출 {n}건",
@@ -76,6 +95,9 @@ const I18N = {
     settings_notif_group: "알림", settings_notif_label: "마감 임박 알림",
     notif_granted: "허용됨", notif_denied: "차단됨", notif_default: "요청 전", notif_unsupported: "지원 안 함",
     settings_notif_note: "이 앱은 서버 없이 이 기기 안에서만 동작해요. 알림은 앱을 열어둘 때 마감이 가까운 업무를 알려주는 수준이고, 앱이 완전히 꺼져 있을 때 울리는 푸시 알림은 지원하지 않아요.",
+    settings_tz_group: "기준 시간대", settings_tz_home: "홈 시간대", settings_tz_secondary: "보조 시간대",
+    settings_tz_note: "업무에 시간을 넣을 때 \"이 시간 기준\" 선택지에 쓰이는 두 나라예요. 지내는 나라가 바뀌면 여기서 바꿔주세요.",
+    tz_pick_title: "시간대 선택",
     settings_design_group: "디자인", settings_theme_label: "테마",
     theme_light: "라이트", theme_dark: "다크", theme_system: "시스템",
     settings_accent_label: "강조색",
@@ -88,6 +110,9 @@ const I18N = {
     prio_high: "상", prio_med: "중", prio_low: "하",
     field_recur: "반복", recur_none: "안 함", recur_daily: "매일", recur_weekly: "매주",
     recur_hint: "완료 처리하면 다음 날짜의 새 업무가 자동으로 생겨요. 완료를 이어갈수록 연속 기록이 쌓여요.",
+    field_start_time: "시작 시간 (선택)", field_end_time: "종료 시간 (선택)", field_tz_origin: "이 시간 기준",
+    tz_origin_hint: "다른 시간대 기준으로 통보받은 시간을 그대로 입력하면, 홈 시간대로 자동 변환해서 저장해요.",
+    task_time_dual: "{gt} · {label} {kr}",
     recur_daily_label: "매일 반복", recur_weekly_label: "매주 반복", streak_suffix: " · {n}일째",
     field_notes: "메모", ph_notes: "참고할 내용을 적어두세요",
     field_photo: "사진 첨부", photo_add: "사진 추가", photo_change: "바꾸기", photo_remove: "제거",
@@ -137,13 +162,18 @@ const I18N = {
     section_overdue: "Overdue", section_today: "Today", section_week: "This week", section_later: "Later", section_done: "Done",
     chip_all: "All", delta_hours: "{sign}{n}h",
     today_badge: "Today",
-    week_empty: "No events",
     cal_empty: "No tasks on this date.",
     cal_month: "Month", cal_week: "Week",
     hub_title: "More",
     hub_report_name: "Reports", hub_report_manage: "Manage tribes/depts", hub_report_stat: "{done}/{total} done",
     hub_money_name: "Money", hub_money_stat: "This month {amt}",
     hub_diary_name: "Records", hub_diary_recent: "Last · {date}", hub_diary_none: "No entries",
+    hub_goals_name: "Goals", hub_goals_stat: "{done}/{total} achieved", hub_goals_manage: "Set a goal",
+    goals_title: "Goals", goal_new: "New Goal", goal_edit: "Edit Goal",
+    field_target_date: "Target date", ph_goal_title: "e.g., Pass the Spanish exam, Graduate seminary",
+    goals_empty: "No goals yet. Tap + to write down your first one.",
+    goal_achieved_badge: "Done!",
+    toast_goal_added: "Goal added", toast_goal_updated: "Goal updated", toast_goal_deleted: "Goal deleted",
     report_title: "Tribe & Department Reports",
     report_month_collect: "This month's collection", report_done_of: "{done} / {total} done",
     report_days_left: "{n} days left · ", report_pending_count: "{n} not submitted",
@@ -165,6 +195,9 @@ const I18N = {
     settings_notif_group: "Notifications", settings_notif_label: "Due-soon alerts",
     notif_granted: "Allowed", notif_denied: "Blocked", notif_default: "Not asked", notif_unsupported: "Unsupported",
     settings_notif_note: "This app runs only on this device, with no server. Notifications only surface tasks due soon while the app is open - it can't send push notifications while fully closed.",
+    settings_tz_group: "Reference timezones", settings_tz_home: "Home timezone", settings_tz_secondary: "Secondary timezone",
+    settings_tz_note: "These are the two options used by \"This time is in\" when adding a time to a task. Change them here if the countries you're dealing with change.",
+    tz_pick_title: "Choose a timezone",
     settings_design_group: "Appearance", settings_theme_label: "Theme",
     theme_light: "Light", theme_dark: "Dark", theme_system: "System",
     settings_accent_label: "Accent color",
@@ -177,6 +210,9 @@ const I18N = {
     prio_high: "High", prio_med: "Med", prio_low: "Low",
     field_recur: "Repeat", recur_none: "None", recur_daily: "Daily", recur_weekly: "Weekly",
     recur_hint: "Completing it creates the next occurrence automatically. Keep completing it to build a streak.",
+    field_start_time: "Start time (optional)", field_end_time: "End time (optional)", field_tz_origin: "This time is in",
+    tz_origin_hint: "Enter the time exactly as told to you in the other timezone — it's auto-converted and saved in your home timezone.",
+    task_time_dual: "{gt} · {label} {kr}",
     recur_daily_label: "Daily", recur_weekly_label: "Weekly", streak_suffix: " · Day {n}",
     field_notes: "Notes", ph_notes: "Add anything worth remembering",
     field_photo: "Photo", photo_add: "Add photo", photo_change: "Change", photo_remove: "Remove",
@@ -226,13 +262,18 @@ const I18N = {
     section_overdue: "Atrasadas", section_today: "Hoy", section_week: "Esta semana", section_later: "Más adelante", section_done: "Completadas",
     chip_all: "Todo", delta_hours: "{sign}{n} h",
     today_badge: "Hoy",
-    week_empty: "Sin eventos",
     cal_empty: "No hay tareas en esta fecha.",
     cal_month: "Mes", cal_week: "Semana",
     hub_title: "Más",
     hub_report_name: "Informes", hub_report_manage: "Gestionar tribus/deptos.", hub_report_stat: "{done}/{total} completado",
     hub_money_name: "Finanzas", hub_money_stat: "Este mes {amt}",
     hub_diary_name: "Registros", hub_diary_recent: "Última · {date}", hub_diary_none: "Sin registros",
+    hub_goals_name: "Metas", hub_goals_stat: "{done}/{total} logradas", hub_goals_manage: "Definir una meta",
+    goals_title: "Metas", goal_new: "Nueva Meta", goal_edit: "Editar Meta",
+    field_target_date: "Fecha meta", ph_goal_title: "Ej., Aprobar el examen de español, Graduarme del seminario",
+    goals_empty: "Aún no hay metas. Toca + para escribir la primera.",
+    goal_achieved_badge: "¡Lograda!",
+    toast_goal_added: "Meta añadida", toast_goal_updated: "Meta actualizada", toast_goal_deleted: "Meta eliminada",
     report_title: "Informes por Tribu y Departamento",
     report_month_collect: "Recopilación de este mes", report_done_of: "{done} / {total} completado",
     report_days_left: "Quedan {n} días · ", report_pending_count: "{n} sin enviar",
@@ -254,6 +295,9 @@ const I18N = {
     settings_notif_group: "Notificaciones", settings_notif_label: "Avisos de vencimiento",
     notif_granted: "Permitido", notif_denied: "Bloqueado", notif_default: "No solicitado", notif_unsupported: "No compatible",
     settings_notif_note: "Esta app funciona solo en este dispositivo, sin servidor. Las notificaciones solo muestran tareas próximas a vencer mientras la app está abierta; no puede enviar notificaciones push si está completamente cerrada.",
+    settings_tz_group: "Husos horarios de referencia", settings_tz_home: "Huso horario base", settings_tz_secondary: "Huso horario secundario",
+    settings_tz_note: "Son las dos opciones que aparecen en \"Esta hora es de\" al añadir una hora a una tarea. Cámbialas aquí si cambian los países con los que trabajas.",
+    tz_pick_title: "Elegir huso horario",
     settings_design_group: "Apariencia", settings_theme_label: "Tema",
     theme_light: "Claro", theme_dark: "Oscuro", theme_system: "Sistema",
     settings_accent_label: "Color de acento",
@@ -266,6 +310,9 @@ const I18N = {
     prio_high: "Alta", prio_med: "Media", prio_low: "Baja",
     field_recur: "Repetir", recur_none: "No", recur_daily: "Diario", recur_weekly: "Semanal",
     recur_hint: "Al completarla se crea automáticamente la siguiente. Completarla seguido acumula una racha.",
+    field_start_time: "Hora de inicio (opcional)", field_end_time: "Hora de fin (opcional)", field_tz_origin: "Esta hora es de",
+    tz_origin_hint: "Escribe la hora tal como te la dijeron en el otro huso horario — se convierte y guarda automáticamente en tu huso horario base.",
+    task_time_dual: "{gt} · {label} {kr}",
     recur_daily_label: "Diario", recur_weekly_label: "Semanal", streak_suffix: " · Día {n}",
     field_notes: "Notas", ph_notes: "Anota algo que quieras recordar",
     field_photo: "Foto", photo_add: "Agregar foto", photo_change: "Cambiar", photo_remove: "Quitar",
@@ -354,12 +401,18 @@ function defaultState() {
     ],
     transactions: [],
     diary: [],
+    goals: [],
     recordCategories: [
       { id: "diary", name: "일기", color: COLOR_PRESETS[2] },
       { id: "meditation", name: "묵상", color: COLOR_PRESETS[3] },
       { id: "dispatch", name: "파견일지", color: COLOR_PRESETS[4] },
     ],
-    settings: { notifAsked: false, calendarMode: "month", theme: "system", accent: COLOR_PRESETS[0], exchangeRates: {}, lang: "ko" },
+    settings: {
+      notifAsked: false, calendarMode: "month", theme: "system", accent: COLOR_PRESETS[0], exchangeRates: {}, lang: "ko",
+      homeTz: { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
+      secondaryTz: { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
+      wkAxisMode: "both",
+    },
   };
 }
 
@@ -373,6 +426,7 @@ let moneyCursor = todayISO().slice(0, 7); // "YYYY-MM", month viewed in 가계�
 let selectedDate = todayISO();
 let pendingAttachment = null; // dataURL staged while a task modal is open
 let recordsTab = "all"; // "all" | "diary" | "meditation" | "dispatch" - filter for the records screen
+let wkHalf = null; // "first" (Mon-Wed) | "second" (Thu-Sun) | null (auto-pick the half containing today)
 
 function loadState() {
   try {
@@ -569,6 +623,19 @@ function isDaytime(tz, date) {
   return hour >= 6 && hour < 19;
 }
 
+// Converts a wall-clock date+time in `fromTz` to the equivalent wall-clock date+time in `toTz`.
+function convertWallTime(dateISO, timeHHMM, fromTz, toTz) {
+  const asIfUtc = new Date(`${dateISO}T${timeHHMM}:00Z`);
+  const fromOffset = utcOffsetMinutes(fromTz, asIfUtc);
+  const trueUtcMs = asIfUtc.getTime() - fromOffset * 60000;
+  const toOffset = utcOffsetMinutes(toTz, new Date(trueUtcMs));
+  const shifted = new Date(trueUtcMs + toOffset * 60000);
+  return {
+    date: `${shifted.getUTCFullYear()}-${pad2(shifted.getUTCMonth() + 1)}-${pad2(shifted.getUTCDate())}`,
+    time: `${pad2(shifted.getUTCHours())}:${pad2(shifted.getUTCMinutes())}`,
+  };
+}
+
 function resizeImageFile(file, maxDim, quality) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -622,7 +689,7 @@ function groupTasksByDate(tasks) {
   });
   const doneTasks = tasks.filter((t) => t.done);
   groups.later = groups.later.filter((t) => !t.done);
-  const sortByDate = (a, b) => a.dueDate.localeCompare(b.dueDate);
+  const sortByDate = (a, b) => a.dueDate.localeCompare(b.dueDate) || (a.startTime || "").localeCompare(b.startTime || "");
   groups.overdue.sort(sortByDate); groups.today.sort(sortByDate); groups.week.sort(sortByDate); groups.later.sort(sortByDate);
   return { ...groups, done: doneTasks.sort((a, b) => b.dueDate.localeCompare(a.dueDate)) };
 }
@@ -667,7 +734,7 @@ function computeStreak(t) {
 
 /* ---------------- rendering: shell ---------------- */
 
-const HUB_VIEWS = ["hub", "report", "money", "diary"];
+const HUB_VIEWS = ["hub", "report", "money", "diary", "goals"];
 function setActiveNav() {
   const group = HUB_VIEWS.includes(currentView) ? "hub" : currentView;
   document.querySelectorAll(".nav-btn").forEach((b) => {
@@ -675,15 +742,26 @@ function setActiveNav() {
   });
 }
 
+function scrollWeekGridToNow() {
+  const scroller = document.getElementById("wk-grid-scroll");
+  if (!scroller) return;
+  const anchor = document.getElementById("wk-anchor-hour");
+  if (anchor) anchor.scrollIntoView({ block: "start", inline: "nearest" });
+}
+
 function render() {
   setActiveNav();
   const root = document.getElementById("view-root");
   if (currentView === "home") root.innerHTML = renderHome();
-  else if (currentView === "calendar") root.innerHTML = renderCalendar();
+  else if (currentView === "calendar") {
+    root.innerHTML = renderCalendar();
+    scrollWeekGridToNow();
+  }
   else if (currentView === "hub") root.innerHTML = renderHub();
   else if (currentView === "report") root.innerHTML = renderReport();
   else if (currentView === "money") root.innerHTML = renderMoney();
   else if (currentView === "diary") root.innerHTML = renderDiary();
+  else if (currentView === "goals") root.innerHTML = renderGoals();
   else if (currentView === "settings") root.innerHTML = renderSettings();
 }
 
@@ -756,10 +834,24 @@ function renderChipRow() {
 
 /* ---------------- rendering: task card ---------------- */
 
+function shortTzLabel(label) { return label.split(" · ")[0]; }
+
+function taskTimeLabel(task) {
+  if (!task.startTime) return null;
+  const homeTz = state.settings.homeTz.tz;
+  const secTz = state.settings.secondaryTz.tz;
+  const gtRange = task.endTime ? `${task.startTime}–${task.endTime}` : task.startTime;
+  const secStart = convertWallTime(task.dueDate, task.startTime, homeTz, secTz).time;
+  const secRange = task.endTime ? `${secStart}–${convertWallTime(task.dueDate, task.endTime, homeTz, secTz).time}` : secStart;
+  return t("task_time_dual", { gt: gtRange, label: state.settings.secondaryTz.flag || shortTzLabel(state.settings.secondaryTz.label), kr: secRange });
+}
+
 function renderTaskCard(task) {
   const cat = catById(task.categoryId);
   const dd = formatDday(task.dueDate);
+  const timeLabel = taskTimeLabel(task);
   const tags = [`<span class="tag cat" style="color:${cat ? cat.color : "inherit"}; background: color-mix(in oklch, ${cat ? cat.color : "gray"} 14%, var(--card));">${escapeHtml(cat ? cat.name : "")}</span>`];
+  if (timeLabel) tags.push(`<span class="tag time-tag">${timeLabel}</span>`);
   if (task.dept) tags.push(`<span class="tag">${escapeHtml(task.dept)}</span>`);
   if (task.recurring) {
     const streak = computeStreak(task);
@@ -852,6 +944,15 @@ function renderCalendar() {
   return modeToggle + (mode === "week" ? renderWeekView() : renderMonthView());
 }
 
+const WK_HOUR_H = 48; // px per hour row in the week grid
+
+function hourLabelHM(h, m) {
+  const opts = m === 0 ? { hour: "numeric" } : { hour: "numeric", minute: "2-digit" };
+  return new Intl.DateTimeFormat(locale(), opts).format(new Date(2023, 0, 1, h, m));
+}
+
+function hourLabel(h) { return hourLabelHM(h, 0); }
+
 function renderWeekView() {
   const active = new Set(activeCategoryIds());
   const today = todayISO();
@@ -859,22 +960,71 @@ function renderWeekView() {
   for (let i = 0; i < 7; i++) days.push(addDaysISO(weekCursor, i));
 
   const dayNames = [1, 2, 3, 4, 5, 6, 0].map(weekdayLabel);
-  const sections = days.map((iso, i) => {
-    const dayTasks = state.tasks
-      .filter((t) => t.dueDate === iso && active.has(t.categoryId))
-      .sort((a, b) => (a.done === b.done ? 0 : a.done ? 1 : -1));
+  const todayIdxInWeek = days.indexOf(today);
+  const autoHalf = (todayIdxInWeek >= 0 && todayIdxInWeek <= 2) ? "first" : "second";
+  const half = wkHalf || autoHalf;
+  const halfDayIdxs = half === "first" ? [0, 1, 2] : [3, 4, 5, 6];
+
+  const axisMode = state.settings.wkAxisMode || "both";
+  const homeTz = state.settings.homeTz.tz;
+  const secTz = state.settings.secondaryTz.tz;
+  const showHomeAxis = axisMode === "home" || axisMode === "both";
+  const showSecAxis = axisMode === "secondary" || axisMode === "both";
+  const axisCount = (showHomeAxis ? 1 : 0) + (showSecAxis ? 1 : 0);
+
+  const tasksByDay = days.map((iso) => state.tasks.filter((t) => t.dueDate === iso && active.has(t.categoryId)));
+  const allDayByDay = tasksByDay.map((list) => list.filter((t) => !t.startTime));
+  const timedByDay = tasksByDay.map((list) => list.filter((t) => t.startTime).sort((a, b) => a.startTime.localeCompare(b.startTime)));
+
+  const headCells = halfDayIdxs.map((i) => {
+    const iso = days[i];
     const d = new Date(iso + "T00:00:00");
     const isToday = iso === today;
-    return `
-      <div class="week-day-head ${isToday ? "today" : ""}">
-        <span class="dow">${dayNames[i]}</span>
-        <span class="dnum">${d.getDate()}</span>
-        ${isToday ? `<span class="today-badge">${t("today_badge")}</span>` : ""}
-        <span class="dcount">${dayTasks.length || ""}</span>
-      </div>
-      ${dayTasks.length ? dayTasks.map(renderTaskCard).join("") : `<div class="week-empty">${t("week_empty")}</div>`}
-    `;
+    return `<div class="wk-daycol-head ${isToday ? "today" : ""}">
+      <span class="wk-dow">${dayNames[i]}</span>
+      <span class="wk-dnum">${d.getDate()}</span>
+    </div>`;
   }).join("");
+
+  const allDayCells = halfDayIdxs.map((i) => `
+    <div class="wk-daycol-allday">
+      ${allDayByDay[i].map((task) => `<button class="wk-allday-chip ${task.done ? "done" : ""}" data-action="open-task" data-id="${task.id}" style="background:color-mix(in oklch, ${catById(task.categoryId)?.color || "gray"} 22%, var(--card));">${escapeHtml(task.title)}</button>`).join("")}
+    </div>`).join("");
+
+  const now = new Date();
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+
+  const bodyCells = halfDayIdxs.map((i) => {
+    const isToday = days[i] === today;
+    const blocks = timedByDay[i].map((task) => {
+      const [sh, sm] = task.startTime.split(":").map(Number);
+      const startMin = sh * 60 + sm;
+      let durMin = 45;
+      if (task.endTime) {
+        const [eh, em] = task.endTime.split(":").map(Number);
+        durMin = Math.max(20, (eh * 60 + em) - startMin);
+      }
+      const cat = catById(task.categoryId);
+      return `<button class="wk-block ${task.done ? "done" : ""}" data-action="open-task" data-id="${task.id}"
+        style="top:${startMin / 60 * WK_HOUR_H}px;height:${Math.max(22, durMin / 60 * WK_HOUR_H)}px;background:color-mix(in oklch, ${cat ? cat.color : "gray"} 28%, var(--card));border-left:3px solid ${cat ? cat.color : "gray"};">
+        <span class="wk-block-time">${task.startTime}${task.endTime ? "–" + task.endTime : ""}</span>
+        <span class="wk-block-title">${escapeHtml(task.title)}</span>
+      </button>`;
+    }).join("");
+    const nowLine = isToday ? `<div class="wk-now-line" style="top:${nowMin / 60 * WK_HOUR_H}px;"></div>` : "";
+    return `<div class="wk-daycol-body" style="height:${24 * WK_HOUR_H}px;">${blocks}${nowLine}</div>`;
+  }).join("");
+
+  const homeAxisCells = Array.from({ length: 24 }, (_, h) => `<div class="wk-hour-cell" id="${h === 7 && showHomeAxis ? "wk-anchor-hour" : ""}" style="height:${WK_HOUR_H}px;">${hourLabel(h)}</div>`).join("");
+  const secAxisCells = Array.from({ length: 24 }, (_, h) => {
+    const conv = convertWallTime(weekCursor, `${pad2(h)}:00`, homeTz, secTz);
+    const [sh, sm] = conv.time.split(":").map(Number);
+    return `<div class="wk-hour-cell wk-hour-cell-sec" id="${h === 7 && !showHomeAxis ? "wk-anchor-hour" : ""}" style="height:${WK_HOUR_H}px;">${hourLabelHM(sh, sm)}</div>`;
+  }).join("");
+
+  const halfSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${half === val}" data-action="pick-wk-half" data-val="${val}">${label}</button>`;
+  const axisSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${axisMode === val}" data-action="pick-wk-axis" data-val="${val}">${label}</button>`;
+  const axisColsCss = `${showHomeAxis ? "44px " : ""}${showSecAxis ? "44px " : ""}repeat(${halfDayIdxs.length}, 1fr)`;
 
   return `
     <div class="cal-header">
@@ -883,7 +1033,21 @@ function renderWeekView() {
       <button class="cal-nav" data-action="week-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     </div>
     ${renderChipRow()}
-    <div class="section">${sections}</div>
+    <div class="wk-controls">
+      <div class="seg" id="wk-half-seg">${halfSeg("first", `${dayNames[0]}-${dayNames[2]}`)}${halfSeg("second", `${dayNames[3]}-${dayNames[6]}`)}</div>
+      <div class="seg" id="wk-axis-seg">${axisSeg("home", state.settings.homeTz.flag || shortTzLabel(state.settings.homeTz.label))}${axisSeg("secondary", state.settings.secondaryTz.flag || shortTzLabel(state.settings.secondaryTz.label))}${axisSeg("both", `${state.settings.homeTz.flag || ""}${state.settings.secondaryTz.flag || ""}`)}</div>
+    </div>
+    <div class="wk-grid-scroll" id="wk-grid-scroll">
+      <div class="wk-grid" style="grid-template-columns:${axisColsCss};">
+        <div class="wk-corner" style="grid-column:span ${axisCount || 1};"></div>
+        ${headCells}
+        <div class="wk-corner-allday" style="grid-column:span ${axisCount || 1};"></div>
+        ${allDayCells}
+        ${showHomeAxis ? `<div class="wk-axis">${homeAxisCells}</div>` : ""}
+        ${showSecAxis ? `<div class="wk-axis wk-axis-sec" style="left:${showHomeAxis ? 44 : 0}px;">${secAxisCells}</div>` : ""}
+        ${bodyCells}
+      </div>
+    </div>
   `;
 }
 
@@ -929,7 +1093,7 @@ function renderMonthView() {
     </button>`;
   }).join("");
 
-  const selTasks = (tasksByDate.get(selectedDate) || []).sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0));
+  const selTasks = (tasksByDate.get(selectedDate) || []).sort((a, b) => (a.done !== b.done ? (a.done ? 1 : -1) : (a.startTime || "").localeCompare(b.startTime || "")));
   const selLabel = selectedDate === today ? `${formatDateShort(selectedDate)} (${t("today_badge")})` : formatDateShort(selectedDate);
 
   return `
@@ -984,6 +1148,8 @@ function renderHub() {
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>`)}
       ${tile("diary", t("hub_diary_name"), lastDiary ? t("hub_diary_recent", { date: lastDiary.date.slice(5).replace("-", "/") }) : t("hub_diary_none"),
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a2 2 0 0 1 2 2v13a1 1 0 0 1-1.55.83L14 17H6a2 2 0 0 1-2-2V4z"/><path d="M8 9h8M8 13h5"/></svg>`)}
+      ${tile("goals", t("hub_goals_name"), state.goals.length ? t("hub_goals_stat", { done: state.goals.filter((g) => g.done).length, total: state.goals.length }) : t("hub_goals_manage"),
+        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18"/><path d="M5 4c2-1 3 1 6 1s4-2 6-1v9c-2-1-3 1-6 1s-4-2-6-1z"/></svg>`)}
     </div>
   `;
 }
@@ -1153,6 +1319,35 @@ function renderDiary() {
   `;
 }
 
+/* ---------------- rendering: goals ---------------- */
+
+function renderGoals() {
+  const goals = [...state.goals].sort((a, b) => (a.done !== b.done ? (a.done ? 1 : -1) : a.targetDate.localeCompare(b.targetDate)));
+  const row = (g) => {
+    const dd = formatDday(g.targetDate);
+    return `<button class="task-card ${g.done ? "done" : ""}" data-action="open-goal" data-id="${g.id}">
+      <span class="task-check" data-action="toggle-goal-done" data-id="${g.id}" role="button" aria-label="${t("mark_done_aria")}">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      </span>
+      <span class="task-body">
+        <span class="task-title">${escapeHtml(g.title)}</span>
+        <span class="task-tags"><span class="tag">${formatDateShort(g.targetDate)}</span></span>
+      </span>
+      <span class="task-side">
+        <span class="dday ${g.done ? "" : dd.cls}">${g.done ? t("goal_achieved_badge") : dd.text}</span>
+      </span>
+    </button>`;
+  };
+  return `
+    ${subHeader(t("goals_title"), `<button class="icon-btn" data-action="open-add-goal" aria-label="${t("goal_new")}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>`)}
+    <div class="section" style="padding-top:14px;">
+      ${goals.length ? goals.map(row).join("") : emptyState(t("goals_empty"))}
+    </div>
+  `;
+}
+
 /* ---------------- rendering: settings ---------------- */
 
 function renderSettings() {
@@ -1207,6 +1402,18 @@ function renderSettings() {
       </button>
     </div>
     <div class="settings-note">${t("settings_notif_note")}</div>
+    <div class="settings-group-title">${t("settings_tz_group")}</div>
+    <div class="settings-list">
+      <button class="settings-row" data-action="open-pick-tz" data-which="home">
+        <span class="label">${t("settings_tz_home")}</span>
+        <span class="val">${state.settings.homeTz.flag || ""} ${escapeHtml(state.settings.homeTz.label)} ›</span>
+      </button>
+      <button class="settings-row" data-action="open-pick-tz" data-which="secondary">
+        <span class="label">${t("settings_tz_secondary")}</span>
+        <span class="val">${state.settings.secondaryTz.flag || ""} ${escapeHtml(state.settings.secondaryTz.label)} ›</span>
+      </button>
+    </div>
+    <div class="settings-note">${t("settings_tz_note")}</div>
     <div class="settings-group-title">${t("settings_design_group")}</div>
     <div class="settings-list">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;">
@@ -1222,7 +1429,7 @@ function renderSettings() {
         <label>${t("settings_accent_label")}</label>
         <div class="color-row">
           ${COLOR_PRESETS.map((col) => `<button type="button" class="color-swatch" data-action="pick-accent" data-color="${col}" data-active="${(state.settings.accent || COLOR_PRESETS[0]) === col}" style="background:${col};color:${col};">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${(state.settings.accent || COLOR_PRESETS[0]) === col ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="${contrastStroke(col)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${(state.settings.accent || COLOR_PRESETS[0]) === col ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
           </button>`).join("")}
         </div>
       </div>
@@ -1281,6 +1488,9 @@ function openTaskModal(taskId) {
   const recur = editing?.recurring?.freq || "none";
   const recurSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${recur === val}" data-action="pick-recur" data-val="${val}">${label}</button>`;
 
+  const tzOrigin = "HOME";
+  const tzOriginSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${tzOrigin === val}" data-action="pick-tz-origin" data-val="${val}">${label}</button>`;
+
   openSheet(`
     <div class="sheet-handle"></div>
     <div class="sheet-title-row">
@@ -1306,6 +1516,21 @@ function openTaskModal(taskId) {
           <label>${t("field_priority")}</label>
           <div class="seg" id="prio-seg">${prioSeg("high", t("prio_high"))}${prioSeg("med", t("prio_med"))}${prioSeg("low", t("prio_low"))}</div>
         </div>
+      </div>
+      <div class="two-col" style="margin-top:14px;">
+        <div class="field">
+          <label>${t("field_start_time")}</label>
+          <input type="time" name="startTime" value="${editing?.startTime || ""}">
+        </div>
+        <div class="field">
+          <label>${t("field_end_time")}</label>
+          <input type="time" name="endTime" value="${editing?.endTime || ""}">
+        </div>
+      </div>
+      <div class="field" style="margin-top:10px;">
+        <label>${t("field_tz_origin")}</label>
+        <div class="seg" id="tz-origin-seg">${tzOriginSeg("HOME", `${state.settings.homeTz.flag || ""} ${shortTzLabel(state.settings.homeTz.label)}`)}${tzOriginSeg("SECONDARY", `${state.settings.secondaryTz.flag || ""} ${shortTzLabel(state.settings.secondaryTz.label)}`)}</div>
+        <div class="hint">${t("tz_origin_hint")}</div>
       </div>
       <div class="field" style="margin-top:14px;">
         <label>${t("field_recur")}</label>
@@ -1333,6 +1558,7 @@ function openTaskModal(taskId) {
   document.getElementById("task-form").dataset.categoryId = editing?.categoryId || state.categories[0].id;
   document.getElementById("task-form").dataset.recur = recur;
   document.getElementById("task-form").dataset.seriesId = editing?.seriesId || "";
+  document.getElementById("task-form").dataset.tzOrigin = tzOrigin;
   document.getElementById("attach-input").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -1367,10 +1593,24 @@ function onSubmitTask(e) {
   const recurring = recurFreq === "none" ? null : { freq: recurFreq };
   const seriesId = recurring ? (form.dataset.seriesId || uid()) : null;
 
+  let dueDate = fd.get("dueDate");
+  let startTime = fd.get("startTime") || null;
+  let endTime = fd.get("endTime") || null;
+  if (startTime && form.dataset.tzOrigin === "SECONDARY") {
+    const homeTz = state.settings.homeTz.tz;
+    const secTz = state.settings.secondaryTz.tz;
+    const convStart = convertWallTime(dueDate, startTime, secTz, homeTz);
+    if (endTime) endTime = convertWallTime(dueDate, endTime, secTz, homeTz).time;
+    dueDate = convStart.date;
+    startTime = convStart.time;
+  }
+
   const payload = {
     title: fd.get("title").trim(),
     dept: fd.get("dept").trim(),
-    dueDate: fd.get("dueDate"),
+    dueDate,
+    startTime,
+    endTime,
     priority,
     categoryId,
     recurring,
@@ -1435,7 +1675,7 @@ function openAddCategoryModal() {
         <label>${t("field_color")}</label>
         <div class="color-row" id="color-row">
           ${COLOR_PRESETS.map((col) => `<button type="button" class="color-swatch" data-action="pick-color" data-color="${col}" data-active="${col === firstFree}" style="background:${col};color:${col};">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === firstFree ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="${contrastStroke(col)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === firstFree ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
           </button>`).join("")}
         </div>
       </div>
@@ -1501,7 +1741,7 @@ function renderCategoryDetailModal(catId) {
       <label>${t("field_color")}</label>
       <div class="color-row">
         ${COLOR_PRESETS.map((col) => `<button type="button" class="color-swatch" data-action="pick-detail-color" data-color="${col}" data-id="${catId}" data-active="${col === cat.color}" style="background:${col};color:${col};">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === cat.color ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="${contrastStroke(col)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === cat.color ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
         </button>`).join("")}
       </div>
     </div>
@@ -1803,6 +2043,57 @@ function deleteDiary(id) {
   saveState(); closeSheet(); render(); showToast(t("toast_diary_deleted"));
 }
 
+/* ---------------- modal: goal ---------------- */
+
+function openGoalModal(goalId) {
+  const editing = goalId ? state.goals.find((g) => g.id === goalId) : null;
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row">
+      <h2>${editing ? t("goal_edit") : t("goal_new")}</h2>
+      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form id="goal-form" data-id="${editing ? editing.id : ""}">
+      <div class="field">
+        <label>${t("field_title")}</label>
+        <input type="text" name="title" required value="${escapeHtml(editing?.title || "")}" placeholder="${t("ph_goal_title")}">
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>${t("field_target_date")}</label>
+        <input type="date" name="targetDate" required value="${editing?.targetDate || todayISO()}">
+      </div>
+      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_save")}</button>
+      ${editing ? `<button type="button" class="danger-btn" style="margin-top:10px;" data-action="delete-goal" data-id="${editing.id}">${t("btn_delete")}</button>` : ""}
+    </form>
+  `);
+  document.getElementById("goal-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const id = e.target.dataset.id;
+    const payload = { title: fd.get("title").trim(), targetDate: fd.get("targetDate") };
+    if (!payload.title || !payload.targetDate) return;
+    if (id) Object.assign(state.goals.find((g) => g.id === id), payload);
+    else state.goals.push({ id: uid(), done: false, createdAt: Date.now(), ...payload });
+    saveState();
+    closeSheet();
+    render();
+    showToast(id ? t("toast_goal_updated") : t("toast_goal_added"));
+  });
+}
+
+function toggleGoalDone(id) {
+  const g = state.goals.find((x) => x.id === id);
+  if (!g) return;
+  g.done = !g.done;
+  saveState();
+  render();
+}
+
+function deleteGoal(id) {
+  state.goals = state.goals.filter((g) => g.id !== id);
+  saveState(); closeSheet(); render(); showToast(t("toast_goal_deleted"));
+}
+
 /* ---------------- modal: add record category ---------------- */
 
 function openRecordCategoryModal(catId) {
@@ -1824,7 +2115,7 @@ function openRecordCategoryModal(catId) {
         <label>${t("field_color")}</label>
         <div class="color-row" id="color-row">
           ${COLOR_PRESETS.map((col) => `<button type="button" class="color-swatch" data-action="pick-color" data-color="${col}" data-active="${col === firstFree}" style="background:${col};color:${col};">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === firstFree ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="${contrastStroke(col)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === firstFree ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
           </button>`).join("")}
         </div>
       </div>
@@ -1868,6 +2159,21 @@ function openAddClockModal() {
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;">
       ${options.length ? options.map((o) => `<button class="settings-row" data-action="pick-clock" data-tz="${o.tz}" data-label="${escapeHtml(o.label)}"><span class="label">${escapeHtml(o.label)}</span></button>`).join("") : emptyState(t("clock_empty"))}
+    </div>
+  `);
+}
+
+/* ---------------- modal: pick reference timezone ---------------- */
+
+function openTzPickerModal(which) {
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row">
+      <h2>${t("tz_pick_title")}</h2>
+      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${TZ_PRESETS.map((o) => `<button class="settings-row" data-action="pick-ref-tz" data-which="${which}" data-tz="${o.tz}" data-label="${escapeHtml(o.label)}" data-flag="${o.flag}"><span class="label">${o.flag} ${escapeHtml(o.label)}</span></button>`).join("")}
     </div>
   `);
 }
@@ -1999,6 +2305,12 @@ document.addEventListener("click", (e) => {
       state.worldClocks.push({ id: uid(), tz: el.dataset.tz, label: el.dataset.label });
       saveState(); closeSheet(); render(); break;
     }
+    case "open-pick-tz": openTzPickerModal(el.dataset.which); break;
+    case "pick-ref-tz": {
+      const key = el.dataset.which === "home" ? "homeTz" : "secondaryTz";
+      state.settings[key] = { tz: el.dataset.tz, label: el.dataset.label, flag: el.dataset.flag };
+      saveState(); closeSheet(); render(); break;
+    }
     case "remove-clock": {
       if (state.worldClocks.length <= 1) break;
       state.worldClocks = state.worldClocks.filter((c) => c.id !== el.dataset.id);
@@ -2027,6 +2339,11 @@ document.addEventListener("click", (e) => {
       document.querySelectorAll("#recur-seg .seg-btn").forEach((b) => b.dataset.active = String(b === el));
       break;
     }
+    case "pick-tz-origin": {
+      document.getElementById("task-form").dataset.tzOrigin = el.dataset.val;
+      document.querySelectorAll("#tz-origin-seg .seg-btn").forEach((b) => b.dataset.active = String(b === el));
+      break;
+    }
     case "pick-photo": document.getElementById("attach-input").click(); break;
     case "remove-photo": pendingAttachment = null; document.getElementById("attach-area").innerHTML = renderAttachArea(); break;
     case "select-date": selectedDate = el.dataset.date; render(); break;
@@ -2038,6 +2355,8 @@ document.addEventListener("click", (e) => {
     }
     case "week-prev": weekCursor = addDaysISO(weekCursor, -7); render(); break;
     case "week-next": weekCursor = addDaysISO(weekCursor, 7); render(); break;
+    case "pick-wk-half": wkHalf = el.dataset.val; render(); break;
+    case "pick-wk-axis": state.settings.wkAxisMode = el.dataset.val; saveState(); render(); break;
     case "set-cal-mode": {
       state.settings.calendarMode = el.dataset.mode;
       if (el.dataset.mode === "week") weekCursor = mondayOf(selectedDate);
@@ -2076,6 +2395,11 @@ document.addEventListener("click", (e) => {
     case "goto-report": switchView("report"); break;
     case "goto-money": switchView("money"); break;
     case "goto-diary": recordsTab = "all"; switchView("diary"); break;
+    case "goto-goals": switchView("goals"); break;
+    case "open-add-goal": openGoalModal(null); break;
+    case "open-goal": openGoalModal(el.dataset.id); break;
+    case "toggle-goal-done": { e.stopPropagation(); toggleGoalDone(el.dataset.id); break; }
+    case "delete-goal": deleteGoal(el.dataset.id); break;
     case "set-records-tab": recordsTab = el.dataset.tab; render(); break;
     case "pick-record-cat": {
       const form = document.getElementById("diary-form");
@@ -2148,6 +2472,7 @@ document.querySelectorAll(".nav-btn").forEach((b) => b.addEventListener("click",
 document.getElementById("btn-add-task").addEventListener("click", () => {
   if (currentView === "money") openTxnModal(null);
   else if (currentView === "diary") openDiaryModal(null);
+  else if (currentView === "goals") openGoalModal(null);
   else openTaskModal(null);
 });
 
