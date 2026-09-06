@@ -1,4 +1,4 @@
-const CACHE_NAME = "timebridge-v21";
+const CACHE_NAME = "timebridge-v22";
 const APP_SHELL = [
   "./",
   "./index.html",

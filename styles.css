@@ -54,7 +54,7 @@
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; padding: 0; background: var(--bg); overscroll-behavior-y: none; }
+html, body { margin: 0; padding: 0; background: var(--bg); overscroll-behavior-y: none; touch-action: pan-x pan-y; }
 body {
   font-family: var(--font);
   color: var(--text);

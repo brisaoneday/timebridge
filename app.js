@@ -947,7 +947,9 @@ function renderCalendar() {
 const WK_HOUR_H = 48; // px per hour row in the week grid
 
 function hourLabelHM(h, m) {
-  const opts = m === 0 ? { hour: "numeric" } : { hour: "numeric", minute: "2-digit" };
+  const opts = m === 0
+    ? { hour: "numeric", hourCycle: "h23" }
+    : { hour: "numeric", minute: "2-digit", hourCycle: "h23" };
   return new Intl.DateTimeFormat(locale(), opts).format(new Date(2023, 0, 1, h, m));
 }
 
