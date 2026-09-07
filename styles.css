@@ -90,6 +90,13 @@ button { font-family: inherit; }
 
 .diff-badge { margin: 8px 20px 0; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--text-dim); background: var(--chip-bg); border-radius: 999px; padding: 5px 10px; }
 
+.sleep-card { display: flex; align-items: center; margin: 10px 20px 0; padding: 12px 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); width: calc(100% - 40px); text-align: left; }
+.sleep-item { display: flex; align-items: center; gap: 8px; flex: 1 1 0; min-width: 0; }
+.sleep-item svg { width: 18px; height: 18px; stroke: var(--accent); flex: 0 0 auto; }
+.sleep-label { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+.sleep-value { font-size: 15px; font-weight: 800; margin-left: auto; font-variant-numeric: tabular-nums; }
+.sleep-div { width: 1px; height: 24px; background: var(--border); margin: 0 14px; flex: 0 0 auto; }
+
 /* ---------- filter chips ---------- */
 .chip-row { display: flex; gap: 8px; padding: 20px 20px 0; flex-wrap: wrap; }
 .chip { border: none; padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--text-dim); }

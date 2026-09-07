@@ -275,6 +275,7 @@ const I18N = {
     todo_title: "할 일", todo_new: "새 할 일", todo_edit: "할 일 수정",
     todo_empty: "아직 등록된 할 일이 없어요. + 버튼으로 첫 항목을 적어보세요.", ph_todo_title: "예: 쿠팡 주문, 양말 사기",
     toast_todo_added: "할 일을 추가했어요",
+    wake_time: "기상", sleep_time: "취침", sleep_log_title: "오늘의 기상/취침 시간",
     report_title: "지파·부서 보고 현황",
     report_month_collect: "이번 달 보고 취합", report_done_of: "{done} / {total} 완료",
     report_days_left: "마감까지 {n}일 남음 · ", report_pending_count: "미제출 {n}건",
@@ -386,6 +387,7 @@ const I18N = {
     todo_title: "To-do", todo_new: "New To-do", todo_edit: "Edit To-do",
     todo_empty: "No to-dos yet. Tap + to add your first one.", ph_todo_title: "e.g., Order from Coupang, Buy socks",
     toast_todo_added: "To-do added",
+    wake_time: "Wake", sleep_time: "Sleep", sleep_log_title: "Today's wake/sleep time",
     report_title: "Tribe & Department Reports",
     report_month_collect: "This month's collection", report_done_of: "{done} / {total} done",
     report_days_left: "{n} days left · ", report_pending_count: "{n} not submitted",
@@ -497,6 +499,7 @@ const I18N = {
     todo_title: "Pendientes", todo_new: "Nuevo pendiente", todo_edit: "Editar pendiente",
     todo_empty: "Aún no hay pendientes. Toca + para agregar el primero.", ph_todo_title: "Ej., Pedido en Coupang, Comprar calcetines",
     toast_todo_added: "Pendiente añadido",
+    wake_time: "Despertar", sleep_time: "Dormir", sleep_log_title: "Hora de despertar/dormir de hoy",
     report_title: "Informes por Tribu y Departamento",
     report_month_collect: "Recopilación de este mes", report_done_of: "{done} / {total} completado",
     report_days_left: "Quedan {n} días · ", report_pending_count: "{n} sin enviar",
@@ -607,6 +610,7 @@ function defaultState() {
     checklists: [],
     studySubjects: [],
     habits: [],
+    sleepLogs: [],
     settings: {
       notifAsked: false, calendarMode: "month", theme: "system", accent: COLOR_PRESETS[0], lang: "ko",
       homeTz: { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
@@ -1065,6 +1069,29 @@ function emptyState(msg) {
 
 /* ---------------- rendering: home ---------------- */
 
+function todaySleepLog() {
+  const today = todayISO();
+  return state.sleepLogs.find((s) => s.date === today) || null;
+}
+
+function renderSleepCard() {
+  const log = todaySleepLog();
+  return `
+    <button class="sleep-card" data-action="open-sleep-log">
+      <span class="sleep-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M4.93 4.93l1.41 1.41M2 12h2M18.36 6.34l1.41-1.41M23 12h-2M12 22a7 7 0 0 0 7-7H5a7 7 0 0 0 7 7z"/></svg>
+        <span class="sleep-label">${t("wake_time")}</span>
+        <span class="sleep-value">${log?.wakeTime || "--:--"}</span>
+      </span>
+      <span class="sleep-div"></span>
+      <span class="sleep-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="sleep-label">${t("sleep_time")}</span>
+        <span class="sleep-value">${log?.sleepTime || "--:--"}</span>
+      </span>
+    </button>`;
+}
+
 function renderHome() {
   const tasks = visibleTasks();
   const hiddenCount = state.tasks.length - tasks.length;
@@ -1104,6 +1131,7 @@ function renderHome() {
       <div class="date-title">${formatDateTitle(todayISO())}</div>
     </div>
     ${renderClockRow()}
+    ${renderSleepCard()}
     ${renderChipRow()}
     ${hiddenCount > 0 && oneActive ? `<div class="hidden-note">${t("hidden_note", { n: hiddenCount, name: escapeHtml(oneActive.name) })}</div>` : ""}
     <div class="section">${listHtml}</div>
@@ -1668,6 +1696,46 @@ function toggleHabitToday(id) {
 function deleteHabit(id) {
   state.habits = state.habits.filter((h) => h.id !== id);
   saveState(); closeSheet(); render(); showToast(t("toast_deleted"));
+}
+
+/* ---------------- modal: sleep log ---------------- */
+
+function openSleepLogModal() {
+  const log = todaySleepLog();
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row">
+      <h2>${t("sleep_log_title")}</h2>
+      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form id="sleep-form">
+      <div class="two-col">
+        <div class="field">
+          <label>${t("wake_time")}</label>
+          <input type="time" name="wakeTime" value="${log?.wakeTime || ""}">
+        </div>
+        <div class="field">
+          <label>${t("sleep_time")}</label>
+          <input type="time" name="sleepTime" value="${log?.sleepTime || ""}">
+        </div>
+      </div>
+      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_save")}</button>
+    </form>
+  `);
+  document.getElementById("sleep-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const today = todayISO();
+    const wakeTime = fd.get("wakeTime") || "";
+    const sleepTime = fd.get("sleepTime") || "";
+    const existing = state.sleepLogs.find((s) => s.date === today);
+    if (existing) Object.assign(existing, { wakeTime, sleepTime });
+    else state.sleepLogs.push({ date: today, wakeTime, sleepTime });
+    saveState();
+    closeSheet();
+    render();
+    showToast(t("toast_saved"));
+  });
 }
 
 /* ---------------- rendering: settings ---------------- */
@@ -2810,6 +2878,7 @@ document.addEventListener("click", (e) => {
     case "delete-checklist-item": deleteChecklistItem(el.dataset.id); break;
     case "goto-habits": switchView("habits"); break;
     case "goto-todo": switchView("todo"); break;
+    case "open-sleep-log": openSleepLogModal(); break;
     case "open-add-habit": openHabitModal(null); break;
     case "open-habit": openHabitModal(el.dataset.id); break;
     case "toggle-habit-today": { e.stopPropagation(); toggleHabitToday(el.dataset.id); break; }
