@@ -39,14 +39,100 @@ const INCOME_CATS = ["급여", "사업", "용돈", "송금", "기타"];
 const ACCOUNT_TYPES = ["은행", "카드", "현금", "기타"];
 
 const TZ_PRESETS = [
-  { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
-  { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
-  { tz: "America/Mexico_City", label: "멕시코시티", flag: "🇲🇽" },
-  { tz: "America/Los_Angeles", label: "미국 · LA", flag: "🇺🇸" },
+  // 북중미
+  { tz: "America/Guatemala", label: "과테말라 · 과테말라시티", flag: "🇬🇹" },
+  { tz: "America/Mexico_City", label: "멕시코 · 멕시코시티", flag: "🇲🇽" },
   { tz: "America/New_York", label: "미국 · 뉴욕", flag: "🇺🇸" },
+  { tz: "America/Chicago", label: "미국 · 시카고", flag: "🇺🇸" },
+  { tz: "America/Denver", label: "미국 · 덴버", flag: "🇺🇸" },
+  { tz: "America/Los_Angeles", label: "미국 · LA", flag: "🇺🇸" },
+  { tz: "America/Toronto", label: "캐나다 · 토론토", flag: "🇨🇦" },
+  { tz: "America/Vancouver", label: "캐나다 · 밴쿠버", flag: "🇨🇦" },
+  { tz: "America/Havana", label: "쿠바 · 아바나", flag: "🇨🇺" },
+  { tz: "America/Jamaica", label: "자메이카", flag: "🇯🇲" },
+  { tz: "America/Santo_Domingo", label: "도미니카공화국", flag: "🇩🇴" },
+  { tz: "America/Tegucigalpa", label: "온두라스", flag: "🇭🇳" },
+  { tz: "America/El_Salvador", label: "엘살바도르", flag: "🇸🇻" },
+  { tz: "America/Managua", label: "니카라과", flag: "🇳🇮" },
+  { tz: "America/Costa_Rica", label: "코스타리카", flag: "🇨🇷" },
+  { tz: "America/Panama", label: "파나마", flag: "🇵🇦" },
+  { tz: "America/Belize", label: "벨리즈", flag: "🇧🇿" },
+  // 남미
+  { tz: "America/Bogota", label: "콜롬비아 · 보고타", flag: "🇨🇴" },
+  { tz: "America/Caracas", label: "베네수엘라 · 카라카스", flag: "🇻🇪" },
+  { tz: "America/Guayaquil", label: "에콰도르", flag: "🇪🇨" },
+  { tz: "America/Lima", label: "페루 · 리마", flag: "🇵🇪" },
+  { tz: "America/La_Paz", label: "볼리비아", flag: "🇧🇴" },
+  { tz: "America/Santiago", label: "칠레 · 산티아고", flag: "🇨🇱" },
+  { tz: "America/Argentina/Buenos_Aires", label: "아르헨티나 · 부에노스아이레스", flag: "🇦🇷" },
+  { tz: "America/Montevideo", label: "우루과이", flag: "🇺🇾" },
+  { tz: "America/Asuncion", label: "파라과이", flag: "🇵🇾" },
+  { tz: "America/Sao_Paulo", label: "브라질 · 상파울루", flag: "🇧🇷" },
+  { tz: "America/Manaus", label: "브라질 · 마나우스", flag: "🇧🇷" },
+  { tz: "America/Guyana", label: "가이아나", flag: "🇬🇾" },
+  // 유럽
+  { tz: "Europe/London", label: "영국 · 런던", flag: "🇬🇧" },
+  { tz: "Europe/Dublin", label: "아일랜드 · 더블린", flag: "🇮🇪" },
+  { tz: "Europe/Lisbon", label: "포르투갈 · 리스본", flag: "🇵🇹" },
   { tz: "Europe/Madrid", label: "스페인 · 마드리드", flag: "🇪🇸" },
+  { tz: "Europe/Paris", label: "프랑스 · 파리", flag: "🇫🇷" },
+  { tz: "Europe/Berlin", label: "독일 · 베를린", flag: "🇩🇪" },
+  { tz: "Europe/Amsterdam", label: "네덜란드 · 암스테르담", flag: "🇳🇱" },
+  { tz: "Europe/Brussels", label: "벨기에 · 브뤼셀", flag: "🇧🇪" },
+  { tz: "Europe/Zurich", label: "스위스 · 취리히", flag: "🇨🇭" },
+  { tz: "Europe/Rome", label: "이탈리아 · 로마", flag: "🇮🇹" },
+  { tz: "Europe/Vienna", label: "오스트리아 · 빈", flag: "🇦🇹" },
+  { tz: "Europe/Warsaw", label: "폴란드 · 바르샤바", flag: "🇵🇱" },
+  { tz: "Europe/Prague", label: "체코 · 프라하", flag: "🇨🇿" },
+  { tz: "Europe/Budapest", label: "헝가리 · 부다페스트", flag: "🇭🇺" },
+  { tz: "Europe/Stockholm", label: "스웨덴 · 스톡홀름", flag: "🇸🇪" },
+  { tz: "Europe/Oslo", label: "노르웨이 · 오슬로", flag: "🇳🇴" },
+  { tz: "Europe/Copenhagen", label: "덴마크 · 코펜하겐", flag: "🇩🇰" },
+  { tz: "Europe/Helsinki", label: "핀란드 · 헬싱키", flag: "🇫🇮" },
+  { tz: "Europe/Athens", label: "그리스 · 아테네", flag: "🇬🇷" },
+  { tz: "Europe/Bucharest", label: "루마니아 · 부쿠레슈티", flag: "🇷🇴" },
+  { tz: "Europe/Kyiv", label: "우크라이나 · 키이우", flag: "🇺🇦" },
+  { tz: "Europe/Moscow", label: "러시아 · 모스크바", flag: "🇷🇺" },
+  { tz: "Europe/Istanbul", label: "튀르키예 · 이스탄불", flag: "🇹🇷" },
+  // 중동 · 아프리카
+  { tz: "Africa/Cairo", label: "이집트 · 카이로", flag: "🇪🇬" },
+  { tz: "Asia/Jerusalem", label: "이스라엘 · 예루살렘", flag: "🇮🇱" },
+  { tz: "Asia/Riyadh", label: "사우디아라비아 · 리야드", flag: "🇸🇦" },
+  { tz: "Asia/Dubai", label: "아랍에미리트 · 두바이", flag: "🇦🇪" },
+  { tz: "Asia/Amman", label: "요르단 · 암만", flag: "🇯🇴" },
+  { tz: "Africa/Johannesburg", label: "남아프리카공화국", flag: "🇿🇦" },
+  { tz: "Africa/Lagos", label: "나이지리아 · 라고스", flag: "🇳🇬" },
+  { tz: "Africa/Nairobi", label: "케냐 · 나이로비", flag: "🇰🇪" },
+  { tz: "Africa/Casablanca", label: "모로코 · 카사블랑카", flag: "🇲🇦" },
+  { tz: "Africa/Addis_Ababa", label: "에티오피아 · 아디스아바바", flag: "🇪🇹" },
+  // 아시아
+  { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
   { tz: "Asia/Tokyo", label: "일본 · 도쿄", flag: "🇯🇵" },
+  { tz: "Asia/Shanghai", label: "중국 · 베이징", flag: "🇨🇳" },
+  { tz: "Asia/Taipei", label: "대만 · 타이베이", flag: "🇹🇼" },
+  { tz: "Asia/Hong_Kong", label: "홍콩", flag: "🇭🇰" },
+  { tz: "Asia/Ulaanbaatar", label: "몽골 · 울란바토르", flag: "🇲🇳" },
   { tz: "Asia/Manila", label: "필리핀 · 마닐라", flag: "🇵🇭" },
+  { tz: "Asia/Ho_Chi_Minh", label: "베트남 · 호치민", flag: "🇻🇳" },
+  { tz: "Asia/Bangkok", label: "태국 · 방콕", flag: "🇹🇭" },
+  { tz: "Asia/Phnom_Penh", label: "캄보디아 · 프놈펜", flag: "🇰🇭" },
+  { tz: "Asia/Vientiane", label: "라오스 · 비엔티안", flag: "🇱🇦" },
+  { tz: "Asia/Yangon", label: "미얀마 · 양곤", flag: "🇲🇲" },
+  { tz: "Asia/Kuala_Lumpur", label: "말레이시아 · 쿠알라룸푸르", flag: "🇲🇾" },
+  { tz: "Asia/Singapore", label: "싱가포르", flag: "🇸🇬" },
+  { tz: "Asia/Jakarta", label: "인도네시아 · 자카르타", flag: "🇮🇩" },
+  { tz: "Asia/Kolkata", label: "인도 · 뉴델리", flag: "🇮🇳" },
+  { tz: "Asia/Karachi", label: "파키스탄 · 카라치", flag: "🇵🇰" },
+  { tz: "Asia/Dhaka", label: "방글라데시 · 다카", flag: "🇧🇩" },
+  { tz: "Asia/Kathmandu", label: "네팔 · 카트만두", flag: "🇳🇵" },
+  { tz: "Asia/Colombo", label: "스리랑카 · 콜롬보", flag: "🇱🇰" },
+  { tz: "Asia/Almaty", label: "카자흐스탄 · 알마티", flag: "🇰🇿" },
+  { tz: "Asia/Tashkent", label: "우즈베키스탄 · 타슈켄트", flag: "🇺🇿" },
+  // 오세아니아
+  { tz: "Australia/Sydney", label: "호주 · 시드니", flag: "🇦🇺" },
+  { tz: "Australia/Perth", label: "호주 · 퍼스", flag: "🇦🇺" },
+  { tz: "Pacific/Auckland", label: "뉴질랜드 · 오클랜드", flag: "🇳🇿" },
+  { tz: "Pacific/Fiji", label: "피지", flag: "🇫🇯" },
 ];
 
 const LANG_LOCALE = { ko: "ko-KR", en: "en-US", es: "es-GT" };
@@ -97,7 +183,7 @@ const I18N = {
     settings_notif_note: "이 앱은 서버 없이 이 기기 안에서만 동작해요. 알림은 앱을 열어둘 때 마감이 가까운 업무를 알려주는 수준이고, 앱이 완전히 꺼져 있을 때 울리는 푸시 알림은 지원하지 않아요.",
     settings_tz_group: "기준 시간대", settings_tz_home: "홈 시간대", settings_tz_secondary: "보조 시간대",
     settings_tz_note: "업무에 시간을 넣을 때 \"이 시간 기준\" 선택지에 쓰이는 두 나라예요. 지내는 나라가 바뀌면 여기서 바꿔주세요.",
-    tz_pick_title: "시간대 선택",
+    tz_pick_title: "시간대 선택", tz_search_ph: "국가 또는 도시 검색",
     settings_design_group: "디자인", settings_theme_label: "테마",
     theme_light: "라이트", theme_dark: "다크", theme_system: "시스템",
     settings_accent_label: "강조색",
@@ -199,7 +285,7 @@ const I18N = {
     settings_notif_note: "This app runs only on this device, with no server. Notifications only surface tasks due soon while the app is open - it can't send push notifications while fully closed.",
     settings_tz_group: "Reference timezones", settings_tz_home: "Home timezone", settings_tz_secondary: "Secondary timezone",
     settings_tz_note: "These are the two options used by \"This time is in\" when adding a time to a task. Change them here if the countries you're dealing with change.",
-    tz_pick_title: "Choose a timezone",
+    tz_pick_title: "Choose a timezone", tz_search_ph: "Search country or city",
     settings_design_group: "Appearance", settings_theme_label: "Theme",
     theme_light: "Light", theme_dark: "Dark", theme_system: "System",
     settings_accent_label: "Accent color",
@@ -301,7 +387,7 @@ const I18N = {
     settings_notif_note: "Esta app funciona solo en este dispositivo, sin servidor. Las notificaciones solo muestran tareas próximas a vencer mientras la app está abierta; no puede enviar notificaciones push si está completamente cerrada.",
     settings_tz_group: "Husos horarios de referencia", settings_tz_home: "Huso horario base", settings_tz_secondary: "Huso horario secundario",
     settings_tz_note: "Son las dos opciones que aparecen en \"Esta hora es de\" al añadir una hora a una tarea. Cámbialas aquí si cambian los países con los que trabajas.",
-    tz_pick_title: "Elegir huso horario",
+    tz_pick_title: "Elegir huso horario", tz_search_ph: "Buscar país o ciudad",
     settings_design_group: "Apariencia", settings_theme_label: "Tema",
     theme_light: "Claro", theme_dark: "Oscuro", theme_system: "Sistema",
     settings_accent_label: "Color de acento",
@@ -2220,34 +2306,58 @@ function openRecordCategoryModal(catId) {
 
 /* ---------------- modal: add clock ---------------- */
 
+function filterTzOptions(list, query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return list;
+  return list.filter((o) => o.label.toLowerCase().includes(q) || o.tz.toLowerCase().includes(q));
+}
+
 function openAddClockModal() {
   const used = new Set(state.worldClocks.map((c) => c.tz));
-  const options = TZ_PRESETS.filter((p) => !used.has(p.tz));
+  const allOptions = TZ_PRESETS.filter((p) => !used.has(p.tz));
+  const renderList = (options) => options.length
+    ? options.map((o) => `<button class="settings-row" data-action="pick-clock" data-tz="${o.tz}" data-label="${escapeHtml(o.label)}"><span class="label">${o.flag} ${escapeHtml(o.label)}</span></button>`).join("")
+    : emptyState(t("clock_empty"));
+
   openSheet(`
     <div class="sheet-handle"></div>
     <div class="sheet-title-row">
       <h2>${t("clock_add_title")}</h2>
       <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      ${options.length ? options.map((o) => `<button class="settings-row" data-action="pick-clock" data-tz="${o.tz}" data-label="${escapeHtml(o.label)}"><span class="label">${escapeHtml(o.label)}</span></button>`).join("") : emptyState(t("clock_empty"))}
+    <div class="field" style="margin-bottom:12px;">
+      <input type="text" id="tz-search" placeholder="${t("tz_search_ph")}" autocomplete="off">
     </div>
+    <div id="tz-list" style="display:flex;flex-direction:column;gap:8px;">${renderList(allOptions)}</div>
   `);
+
+  document.getElementById("tz-search").addEventListener("input", (e) => {
+    document.getElementById("tz-list").innerHTML = renderList(filterTzOptions(allOptions, e.target.value));
+  });
 }
 
 /* ---------------- modal: pick reference timezone ---------------- */
 
 function openTzPickerModal(which) {
+  const renderList = (options) => options.length
+    ? options.map((o) => `<button class="settings-row" data-action="pick-ref-tz" data-which="${which}" data-tz="${o.tz}" data-label="${escapeHtml(o.label)}" data-flag="${o.flag}"><span class="label">${o.flag} ${escapeHtml(o.label)}</span></button>`).join("")
+    : emptyState(t("clock_empty"));
+
   openSheet(`
     <div class="sheet-handle"></div>
     <div class="sheet-title-row">
       <h2>${t("tz_pick_title")}</h2>
       <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      ${TZ_PRESETS.map((o) => `<button class="settings-row" data-action="pick-ref-tz" data-which="${which}" data-tz="${o.tz}" data-label="${escapeHtml(o.label)}" data-flag="${o.flag}"><span class="label">${o.flag} ${escapeHtml(o.label)}</span></button>`).join("")}
+    <div class="field" style="margin-bottom:12px;">
+      <input type="text" id="tz-search" placeholder="${t("tz_search_ph")}" autocomplete="off">
     </div>
+    <div id="tz-list" style="display:flex;flex-direction:column;gap:8px;">${renderList(TZ_PRESETS)}</div>
   `);
+
+  document.getElementById("tz-search").addEventListener("input", (e) => {
+    document.getElementById("tz-list").innerHTML = renderList(filterTzOptions(TZ_PRESETS, e.target.value));
+  });
 }
 
 /* ---------------- import / export ---------------- */
