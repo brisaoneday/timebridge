@@ -70,6 +70,13 @@ const TZ_PRESETS = [
   { tz: "America/Sao_Paulo", label: "브라질 · 상파울루", flag: "🇧🇷" },
   { tz: "America/Manaus", label: "브라질 · 마나우스", flag: "🇧🇷" },
   { tz: "America/Guyana", label: "가이아나", flag: "🇬🇾" },
+  { tz: "America/Paramaribo", label: "수리남", flag: "🇸🇷" },
+  // 카리브해
+  { tz: "America/Nassau", label: "바하마", flag: "🇧🇸" },
+  { tz: "America/Barbados", label: "바베이도스", flag: "🇧🇧" },
+  { tz: "America/Port_of_Spain", label: "트리니다드토바고", flag: "🇹🇹" },
+  { tz: "America/Port-au-Prince", label: "아이티", flag: "🇭🇹" },
+  { tz: "America/Puerto_Rico", label: "푸에르토리코", flag: "🇵🇷" },
   // 유럽
   { tz: "Europe/London", label: "영국 · 런던", flag: "🇬🇧" },
   { tz: "Europe/Dublin", label: "아일랜드 · 더블린", flag: "🇮🇪" },
@@ -94,17 +101,101 @@ const TZ_PRESETS = [
   { tz: "Europe/Kyiv", label: "우크라이나 · 키이우", flag: "🇺🇦" },
   { tz: "Europe/Moscow", label: "러시아 · 모스크바", flag: "🇷🇺" },
   { tz: "Europe/Istanbul", label: "튀르키예 · 이스탄불", flag: "🇹🇷" },
-  // 중동 · 아프리카
-  { tz: "Africa/Cairo", label: "이집트 · 카이로", flag: "🇪🇬" },
+  { tz: "Europe/Belgrade", label: "세르비아 · 베오그라드", flag: "🇷🇸" },
+  { tz: "Europe/Zagreb", label: "크로아티아 · 자그레브", flag: "🇭🇷" },
+  { tz: "Europe/Sofia", label: "불가리아 · 소피아", flag: "🇧🇬" },
+  { tz: "Europe/Sarajevo", label: "보스니아헤르체고비나", flag: "🇧🇦" },
+  { tz: "Europe/Tirane", label: "알바니아 · 티라나", flag: "🇦🇱" },
+  { tz: "Europe/Skopje", label: "북마케도니아 · 스코페", flag: "🇲🇰" },
+  { tz: "Europe/Ljubljana", label: "슬로베니아 · 류블랴나", flag: "🇸🇮" },
+  { tz: "Europe/Bratislava", label: "슬로바키아 · 브라티슬라바", flag: "🇸🇰" },
+  { tz: "Europe/Tallinn", label: "에스토니아 · 탈린", flag: "🇪🇪" },
+  { tz: "Europe/Riga", label: "라트비아 · 리가", flag: "🇱🇻" },
+  { tz: "Europe/Vilnius", label: "리투아니아 · 빌뉴스", flag: "🇱🇹" },
+  { tz: "Europe/Minsk", label: "벨라루스 · 민스크", flag: "🇧🇾" },
+  { tz: "Europe/Chisinau", label: "몰도바 · 키시너우", flag: "🇲🇩" },
+  // 캅카스 · 중앙아시아
+  { tz: "Asia/Tbilisi", label: "조지아 · 트빌리시", flag: "🇬🇪" },
+  { tz: "Asia/Yerevan", label: "아르메니아 · 예레반", flag: "🇦🇲" },
+  { tz: "Asia/Baku", label: "아제르바이잔 · 바쿠", flag: "🇦🇿" },
+  { tz: "Asia/Ashgabat", label: "투르크메니스탄 · 아시가바트", flag: "🇹🇲" },
+  { tz: "Asia/Bishkek", label: "키르기스스탄 · 비슈케크", flag: "🇰🇬" },
+  { tz: "Asia/Dushanbe", label: "타지키스탄 · 두샨베", flag: "🇹🇯" },
+  // 중동
   { tz: "Asia/Jerusalem", label: "이스라엘 · 예루살렘", flag: "🇮🇱" },
   { tz: "Asia/Riyadh", label: "사우디아라비아 · 리야드", flag: "🇸🇦" },
   { tz: "Asia/Dubai", label: "아랍에미리트 · 두바이", flag: "🇦🇪" },
   { tz: "Asia/Amman", label: "요르단 · 암만", flag: "🇯🇴" },
-  { tz: "Africa/Johannesburg", label: "남아프리카공화국", flag: "🇿🇦" },
-  { tz: "Africa/Lagos", label: "나이지리아 · 라고스", flag: "🇳🇬" },
-  { tz: "Africa/Nairobi", label: "케냐 · 나이로비", flag: "🇰🇪" },
+  { tz: "Asia/Baghdad", label: "이라크 · 바그다드", flag: "🇮🇶" },
+  { tz: "Asia/Tehran", label: "이란 · 테헤란", flag: "🇮🇷" },
+  { tz: "Asia/Kuwait", label: "쿠웨이트", flag: "🇰🇼" },
+  { tz: "Asia/Qatar", label: "카타르 · 도하", flag: "🇶🇦" },
+  { tz: "Asia/Bahrain", label: "바레인", flag: "🇧🇭" },
+  { tz: "Asia/Muscat", label: "오만 · 무스카트", flag: "🇴🇲" },
+  { tz: "Asia/Aden", label: "예멘", flag: "🇾🇪" },
+  { tz: "Asia/Beirut", label: "레바논 · 베이루트", flag: "🇱🇧" },
+  { tz: "Asia/Damascus", label: "시리아 · 다마스쿠스", flag: "🇸🇾" },
+  { tz: "Asia/Gaza", label: "팔레스타인", flag: "🇵🇸" },
+  { tz: "Asia/Kabul", label: "아프가니스탄 · 카불", flag: "🇦🇫" },
+  // 아프리카 - 북아프리카
+  { tz: "Africa/Cairo", label: "이집트 · 카이로", flag: "🇪🇬" },
   { tz: "Africa/Casablanca", label: "모로코 · 카사블랑카", flag: "🇲🇦" },
+  { tz: "Africa/Tripoli", label: "리비아 · 트리폴리", flag: "🇱🇾" },
+  { tz: "Africa/Tunis", label: "튀니지", flag: "🇹🇳" },
+  { tz: "Africa/Algiers", label: "알제리 · 알제", flag: "🇩🇿" },
+  { tz: "Africa/Khartoum", label: "수단 · 하르툼", flag: "🇸🇩" },
+  // 아프리카 - 서아프리카
+  { tz: "Africa/Lagos", label: "나이지리아 · 라고스", flag: "🇳🇬" },
+  { tz: "Africa/Accra", label: "가나 · 아크라", flag: "🇬🇭" },
+  { tz: "Africa/Abidjan", label: "코트디부아르", flag: "🇨🇮" },
+  { tz: "Africa/Dakar", label: "세네갈 · 다카르", flag: "🇸🇳" },
+  { tz: "Africa/Bamako", label: "말리 · 바마코", flag: "🇲🇱" },
+  { tz: "Africa/Ouagadougou", label: "부르키나파소", flag: "🇧🇫" },
+  { tz: "Africa/Niamey", label: "니제르 · 니아메", flag: "🇳🇪" },
+  { tz: "Africa/Conakry", label: "기니 · 코나크리", flag: "🇬🇳" },
+  { tz: "Africa/Porto-Novo", label: "베냉", flag: "🇧🇯" },
+  { tz: "Africa/Lome", label: "토고 · 로메", flag: "🇹🇬" },
+  { tz: "Africa/Freetown", label: "시에라리온 · 프리타운", flag: "🇸🇱" },
+  { tz: "Africa/Monrovia", label: "라이베리아 · 몬로비아", flag: "🇱🇷" },
+  { tz: "Africa/Banjul", label: "감비아 · 반줄", flag: "🇬🇲" },
+  { tz: "Africa/Bissau", label: "기니비사우", flag: "🇬🇼" },
+  { tz: "Africa/Nouakchott", label: "모리타니 · 누악쇼트", flag: "🇲🇷" },
+  { tz: "Atlantic/Cape_Verde", label: "카보베르데", flag: "🇨🇻" },
+  // 아프리카 - 중앙아프리카
+  { tz: "Africa/Douala", label: "카메룬 · 두알라", flag: "🇨🇲" },
+  { tz: "Africa/Ndjamena", label: "차드 · 은자메나", flag: "🇹🇩" },
+  { tz: "Africa/Bangui", label: "중앙아프리카공화국", flag: "🇨🇫" },
+  { tz: "Africa/Brazzaville", label: "콩고공화국 · 브라자빌", flag: "🇨🇬" },
+  { tz: "Africa/Kinshasa", label: "콩고민주공화국 · 킨샤사", flag: "🇨🇩" },
+  { tz: "Africa/Libreville", label: "가봉 · 리브르빌", flag: "🇬🇦" },
+  { tz: "Africa/Malabo", label: "적도기니 · 말라보", flag: "🇬🇶" },
+  { tz: "Africa/Sao_Tome", label: "상투메프린시페", flag: "🇸🇹" },
+  // 아프리카 - 동아프리카
+  { tz: "Africa/Nairobi", label: "케냐 · 나이로비", flag: "🇰🇪" },
   { tz: "Africa/Addis_Ababa", label: "에티오피아 · 아디스아바바", flag: "🇪🇹" },
+  { tz: "Africa/Dar_es_Salaam", label: "탄자니아 · 다르에스살람", flag: "🇹🇿" },
+  { tz: "Africa/Kampala", label: "우간다 · 캄팔라", flag: "🇺🇬" },
+  { tz: "Africa/Kigali", label: "르완다 · 키갈리", flag: "🇷🇼" },
+  { tz: "Africa/Bujumbura", label: "부룬디 · 부줌부라", flag: "🇧🇮" },
+  { tz: "Africa/Mogadishu", label: "소말리아 · 모가디슈", flag: "🇸🇴" },
+  { tz: "Africa/Djibouti", label: "지부티", flag: "🇩🇯" },
+  { tz: "Africa/Juba", label: "남수단 · 주바", flag: "🇸🇸" },
+  { tz: "Africa/Asmara", label: "에리트레아 · 아스마라", flag: "🇪🇷" },
+  { tz: "Indian/Mahe", label: "세이셸", flag: "🇸🇨" },
+  { tz: "Indian/Antananarivo", label: "마다가스카르 · 안타나나리보", flag: "🇲🇬" },
+  { tz: "Indian/Mauritius", label: "모리셔스", flag: "🇲🇺" },
+  { tz: "Indian/Comoro", label: "코모로", flag: "🇰🇲" },
+  { tz: "Africa/Blantyre", label: "말라위 · 블랜타이어", flag: "🇲🇼" },
+  { tz: "Africa/Lusaka", label: "잠비아 · 루사카", flag: "🇿🇲" },
+  { tz: "Africa/Harare", label: "짐바브웨 · 하라레", flag: "🇿🇼" },
+  { tz: "Africa/Maputo", label: "모잠비크 · 마푸투", flag: "🇲🇿" },
+  // 아프리카 - 남부아프리카
+  { tz: "Africa/Johannesburg", label: "남아프리카공화국", flag: "🇿🇦" },
+  { tz: "Africa/Windhoek", label: "나미비아 · 빈트후크", flag: "🇳🇦" },
+  { tz: "Africa/Gaborone", label: "보츠와나 · 가보로네", flag: "🇧🇼" },
+  { tz: "Africa/Maseru", label: "레소토 · 마세루", flag: "🇱🇸" },
+  { tz: "Africa/Mbabane", label: "에스와티니 · 음바바네", flag: "🇸🇿" },
+  { tz: "Africa/Luanda", label: "앙골라 · 루안다", flag: "🇦🇴" },
   // 아시아
   { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
   { tz: "Asia/Tokyo", label: "일본 · 도쿄", flag: "🇯🇵" },
@@ -128,11 +219,23 @@ const TZ_PRESETS = [
   { tz: "Asia/Colombo", label: "스리랑카 · 콜롬보", flag: "🇱🇰" },
   { tz: "Asia/Almaty", label: "카자흐스탄 · 알마티", flag: "🇰🇿" },
   { tz: "Asia/Tashkent", label: "우즈베키스탄 · 타슈켄트", flag: "🇺🇿" },
+  { tz: "Asia/Thimphu", label: "부탄 · 팀부", flag: "🇧🇹" },
+  { tz: "Indian/Maldives", label: "몰디브 · 말레", flag: "🇲🇻" },
+  { tz: "Asia/Brunei", label: "브루나이", flag: "🇧🇳" },
+  { tz: "Asia/Dili", label: "동티모르 · 딜리", flag: "🇹🇱" },
   // 오세아니아
   { tz: "Australia/Sydney", label: "호주 · 시드니", flag: "🇦🇺" },
   { tz: "Australia/Perth", label: "호주 · 퍼스", flag: "🇦🇺" },
   { tz: "Pacific/Auckland", label: "뉴질랜드 · 오클랜드", flag: "🇳🇿" },
   { tz: "Pacific/Fiji", label: "피지", flag: "🇫🇯" },
+  { tz: "Pacific/Port_Moresby", label: "파푸아뉴기니 · 포트모르즈비", flag: "🇵🇬" },
+  { tz: "Pacific/Guadalcanal", label: "솔로몬제도", flag: "🇸🇧" },
+  { tz: "Pacific/Efate", label: "바누아투", flag: "🇻🇺" },
+  { tz: "Pacific/Apia", label: "사모아", flag: "🇼🇸" },
+  { tz: "Pacific/Tongatapu", label: "통가", flag: "🇹🇴" },
+  { tz: "Pacific/Palau", label: "팔라우", flag: "🇵🇼" },
+  { tz: "Pacific/Majuro", label: "마셜제도", flag: "🇲🇭" },
+  { tz: "Pacific/Tarawa", label: "키리바시", flag: "🇰🇮" },
 ];
 
 const LANG_LOCALE = { ko: "ko-KR", en: "en-US", es: "es-GT" };
@@ -184,6 +287,9 @@ const I18N = {
     settings_tz_group: "기준 시간대", settings_tz_home: "홈 시간대", settings_tz_secondary: "보조 시간대",
     settings_tz_note: "업무에 시간을 넣을 때 \"이 시간 기준\" 선택지에 쓰이는 두 나라예요. 지내는 나라가 바뀌면 여기서 바꿔주세요.",
     tz_pick_title: "시간대 선택", tz_search_ph: "국가 또는 도시 검색",
+    settings_calendar_group: "캘린더 - 주간 보기", settings_wk_style_label: "표시 방식",
+    wk_style_halves: "월-수 / 목-일", wk_style_slide: "슬라이드",
+    settings_wk_style_hint: "슬라이드는 요일 버튼 없이 일주일 전체를 옆으로 넘겨서 봐요.",
     settings_design_group: "디자인", settings_theme_label: "테마",
     theme_light: "라이트", theme_dark: "다크", theme_system: "시스템",
     settings_accent_label: "강조색",
@@ -286,6 +392,9 @@ const I18N = {
     settings_tz_group: "Reference timezones", settings_tz_home: "Home timezone", settings_tz_secondary: "Secondary timezone",
     settings_tz_note: "These are the two options used by \"This time is in\" when adding a time to a task. Change them here if the countries you're dealing with change.",
     tz_pick_title: "Choose a timezone", tz_search_ph: "Search country or city",
+    settings_calendar_group: "Calendar - Week view", settings_wk_style_label: "Display style",
+    wk_style_halves: "Mon-Wed / Thu-Sun", wk_style_slide: "Slide",
+    settings_wk_style_hint: "Slide shows the whole week at once, swipe sideways with no half-week buttons.",
     settings_design_group: "Appearance", settings_theme_label: "Theme",
     theme_light: "Light", theme_dark: "Dark", theme_system: "System",
     settings_accent_label: "Accent color",
@@ -388,6 +497,9 @@ const I18N = {
     settings_tz_group: "Husos horarios de referencia", settings_tz_home: "Huso horario base", settings_tz_secondary: "Huso horario secundario",
     settings_tz_note: "Son las dos opciones que aparecen en \"Esta hora es de\" al añadir una hora a una tarea. Cámbialas aquí si cambian los países con los que trabajas.",
     tz_pick_title: "Elegir huso horario", tz_search_ph: "Buscar país o ciudad",
+    settings_calendar_group: "Calendario - Vista semanal", settings_wk_style_label: "Estilo de visualización",
+    wk_style_halves: "Lun-Mié / Jue-Dom", wk_style_slide: "Deslizar",
+    settings_wk_style_hint: "Deslizar muestra toda la semana a la vez, se desliza hacia los lados sin botones de medio semana.",
     settings_design_group: "Apariencia", settings_theme_label: "Tema",
     theme_light: "Claro", theme_dark: "Oscuro", theme_system: "Sistema",
     settings_accent_label: "Color de acento",
@@ -492,6 +604,7 @@ function defaultState() {
       homeTz: { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
       secondaryTz: { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
       wkAxisMode: "both",
+      wkStyleMode: "halves",
     },
   };
 }
@@ -832,6 +945,10 @@ function scrollWeekGridToNow() {
   if (!scroller) return;
   const anchor = document.getElementById("wk-anchor-hour");
   if (anchor) anchor.scrollIntoView({ block: "start", inline: "nearest" });
+  if (scroller.dataset.slide === "true") {
+    const todayCol = scroller.querySelector(".wk-daycol-head.today");
+    if (todayCol) todayCol.scrollIntoView({ block: "nearest", inline: "center" });
+  }
 }
 
 function render() {
@@ -1050,7 +1167,9 @@ function renderWeekView() {
   const todayIdxInWeek = days.indexOf(today);
   const autoHalf = (todayIdxInWeek >= 0 && todayIdxInWeek <= 2) ? "first" : "second";
   const half = wkHalf || autoHalf;
-  const halfDayIdxs = half === "first" ? [0, 1, 2] : [3, 4, 5, 6];
+  const styleMode = state.settings.wkStyleMode || "halves";
+  const isSlide = styleMode === "slide";
+  const halfDayIdxs = isSlide ? [0, 1, 2, 3, 4, 5, 6] : (half === "first" ? [0, 1, 2] : [3, 4, 5, 6]);
 
   const axisMode = state.settings.wkAxisMode || "both";
   const homeTz = state.settings.homeTz.tz;
@@ -1111,7 +1230,7 @@ function renderWeekView() {
 
   const halfSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${half === val}" data-action="pick-wk-half" data-val="${val}">${label}</button>`;
   const axisSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${axisMode === val}" data-action="pick-wk-axis" data-val="${val}">${label}</button>`;
-  const axisColsCss = `${showHomeAxis ? "44px " : ""}${showSecAxis ? "44px " : ""}repeat(${halfDayIdxs.length}, 1fr)`;
+  const axisColsCss = `${showHomeAxis ? "44px " : ""}${showSecAxis ? "44px " : ""}repeat(${halfDayIdxs.length}, ${isSlide ? "92px" : "1fr"})`;
 
   return `
     <div class="cal-header">
@@ -1121,10 +1240,10 @@ function renderWeekView() {
     </div>
     ${renderChipRow()}
     <div class="wk-controls">
-      <div class="seg" id="wk-half-seg">${halfSeg("first", `${dayNames[0]}-${dayNames[2]}`)}${halfSeg("second", `${dayNames[3]}-${dayNames[6]}`)}</div>
+      ${isSlide ? "" : `<div class="seg" id="wk-half-seg">${halfSeg("first", `${dayNames[0]}-${dayNames[2]}`)}${halfSeg("second", `${dayNames[3]}-${dayNames[6]}`)}</div>`}
       <div class="seg" id="wk-axis-seg">${axisSeg("home", state.settings.homeTz.flag || shortTzLabel(state.settings.homeTz.label))}${axisSeg("secondary", state.settings.secondaryTz.flag || shortTzLabel(state.settings.secondaryTz.label))}${axisSeg("both", `${state.settings.homeTz.flag || ""}${state.settings.secondaryTz.flag || ""}`)}</div>
     </div>
-    <div class="wk-grid-scroll" id="wk-grid-scroll">
+    <div class="wk-grid-scroll" id="wk-grid-scroll" data-slide="${isSlide}">
       <div class="wk-grid" style="grid-template-columns:${axisColsCss};">
         <div class="wk-corner" style="grid-column:span ${axisCount || 1};"></div>
         ${headCells}
@@ -1501,6 +1620,20 @@ function renderSettings() {
       </button>
     </div>
     <div class="settings-note">${t("settings_tz_note")}</div>
+    <div class="settings-group-title">${t("settings_calendar_group")}</div>
+    <div class="settings-list">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;">
+      <div class="field">
+        <label>${t("settings_wk_style_label")}</label>
+        <div class="seg" id="wk-style-seg">
+          ${[["halves", t("wk_style_halves")], ["slide", t("wk_style_slide")]].map(([val, label]) => `
+            <button type="button" class="seg-btn small" data-active="${(state.settings.wkStyleMode || "halves") === val}" data-action="pick-wk-style" data-val="${val}">${label}</button>
+          `).join("")}
+        </div>
+        <div class="hint">${t("settings_wk_style_hint")}</div>
+      </div>
+      </div>
+    </div>
     <div class="settings-group-title">${t("settings_design_group")}</div>
     <div class="settings-list">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;">
@@ -2541,6 +2674,7 @@ document.addEventListener("click", (e) => {
     case "week-next": weekCursor = addDaysISO(weekCursor, 7); render(); break;
     case "pick-wk-half": wkHalf = el.dataset.val; render(); break;
     case "pick-wk-axis": state.settings.wkAxisMode = el.dataset.val; saveState(); render(); break;
+    case "pick-wk-style": state.settings.wkStyleMode = el.dataset.val; saveState(); render(); break;
     case "set-cal-mode": {
       state.settings.calendarMode = el.dataset.mode;
       if (el.dataset.mode === "week") weekCursor = mondayOf(selectedDate);
