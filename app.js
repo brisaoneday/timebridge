@@ -20,6 +20,8 @@ const COLOR_PRESETS = [
   "oklch(80% 0.01 260)",
 ];
 
+const MOOD_EMOJIS = ["😊", "😢", "😡", "😴", "🙏", "😐"];
+
 // Swatches lighter than this read poorly with a white checkmark; use a dark one instead.
 function contrastStroke(oklchColor) {
   const m = oklchColor.match(/oklch\((\d+)%/);
@@ -263,6 +265,18 @@ const I18N = {
     goals_empty: "아직 등록된 목표가 없어요. + 버튼으로 첫 목표를 적어보세요.",
     goal_achieved_badge: "달성!",
     toast_goal_added: "목표를 추가했어요", toast_goal_updated: "목표를 수정했어요", toast_goal_deleted: "목표를 삭제했어요",
+    hub_bucket_name: "버킷리스트", hub_bucket_stat: "{done}/{total} 달성", hub_bucket_manage: "버킷리스트 시작하기",
+    hub_study_name: "공부", hub_study_stat: "{done}/{total} 완료", hub_study_manage: "공부 목록 시작하기",
+    bucket_title: "버킷리스트", bucket_new: "새 버킷리스트", bucket_edit: "버킷리스트 수정",
+    bucket_empty: "아직 등록된 버킷리스트가 없어요. + 버튼으로 첫 항목을 적어보세요.", ph_bucket_title: "예: 산티아고 순례길 완주하기",
+    study_title: "공부", study_new: "새 공부 항목", study_edit: "공부 항목 수정",
+    study_empty: "아직 등록된 공부 항목이 없어요. + 버튼으로 추가해보세요.", ph_study_title: "예: 로마서 강해 정리",
+    field_subject: "과목", subject_new: "새 과목 추가", ph_subject_name: "예: 성경공부, 스페인어, 신학",
+    subject_none_hint: "먼저 과목을 추가해주세요.",
+    field_study_range: "범위", ph_study_range: "예: 3장-5장, 1~50페이지",
+    checklist_stamp: "달성",
+    toast_bucket_added: "버킷리스트를 추가했어요", toast_study_added: "공부 항목을 추가했어요",
+    toast_subject_added: "과목을 추가했어요", toast_deleted: "삭제했어요",
     report_title: "지파·부서 보고 현황",
     report_month_collect: "이번 달 보고 취합", report_done_of: "{done} / {total} 완료",
     report_days_left: "마감까지 {n}일 남음 · ", report_pending_count: "미제출 {n}건",
@@ -336,7 +350,7 @@ const I18N = {
     field_content: "내용", ph_diary: "오늘 있었던 일, 생각, 감사한 것 …",
     rec_tab_all: "전체", rec_empty_cat: "아직 '{name}' 기록이 없어요.",
     rec_cat_new: "새 기록 카테고리", rec_cat_edit: "기록 카테고리 수정", ph_rec_cat_name: "예: 새벽기도, 심방, 훈련일지 …",
-    field_record_cat: "구분", field_verse: "말씀 구절 (선택)", ph_verse: "예: 요한복음 3:16",
+    field_record_cat: "구분", field_mood: "오늘 기분 (선택)", field_verse: "말씀 구절 (선택)", ph_verse: "예: 요한복음 3:16",
     field_place: "파견지", ph_place: "예: OO지역 심방, OO행사 지원",
     field_meditation_text: "느낀 점", ph_meditation: "말씀을 통해 느낀 점을 적어보세요",
     ph_dispatch: "파견 중 있었던 일과 결과를 적어보세요",
@@ -368,6 +382,18 @@ const I18N = {
     goals_empty: "No goals yet. Tap + to write down your first one.",
     goal_achieved_badge: "Done!",
     toast_goal_added: "Goal added", toast_goal_updated: "Goal updated", toast_goal_deleted: "Goal deleted",
+    hub_bucket_name: "Bucket List", hub_bucket_stat: "{done}/{total} done", hub_bucket_manage: "Start a bucket list",
+    hub_study_name: "Study", hub_study_stat: "{done}/{total} done", hub_study_manage: "Start a study list",
+    bucket_title: "Bucket List", bucket_new: "New Bucket List Item", bucket_edit: "Edit Item",
+    bucket_empty: "No bucket list items yet. Tap + to add your first one.", ph_bucket_title: "e.g., Walk the Camino de Santiago",
+    study_title: "Study", study_new: "New Study Item", study_edit: "Edit Study Item",
+    study_empty: "No study items yet. Tap + to add one.", ph_study_title: "e.g., Review Romans commentary",
+    field_subject: "Subject", subject_new: "Add Subject", ph_subject_name: "e.g., Bible study, Spanish, Theology",
+    subject_none_hint: "Add a subject first.",
+    field_study_range: "Range", ph_study_range: "e.g., Ch. 3-5, pages 1-50",
+    checklist_stamp: "Done",
+    toast_bucket_added: "Bucket list item added", toast_study_added: "Study item added",
+    toast_subject_added: "Subject added", toast_deleted: "Deleted",
     report_title: "Tribe & Department Reports",
     report_month_collect: "This month's collection", report_done_of: "{done} / {total} done",
     report_days_left: "{n} days left · ", report_pending_count: "{n} not submitted",
@@ -441,7 +467,7 @@ const I18N = {
     field_content: "Content", ph_diary: "What happened today, what you're thinking, what you're grateful for …",
     rec_tab_all: "All", rec_empty_cat: "No {name} entries yet.",
     rec_cat_new: "New Record Category", rec_cat_edit: "Edit Record Category", ph_rec_cat_name: "e.g., Dawn prayer, Visitation, Training log …",
-    field_record_cat: "Category", field_verse: "Verse (optional)", ph_verse: "e.g., John 3:16",
+    field_record_cat: "Category", field_mood: "Today's mood (optional)", field_verse: "Verse (optional)", ph_verse: "e.g., John 3:16",
     field_place: "Place", ph_place: "e.g., visit to the OO area, support for the OO event",
     field_meditation_text: "Reflection", ph_meditation: "Write what this passage means to you",
     ph_dispatch: "What happened during the dispatch, and the results",
@@ -473,6 +499,18 @@ const I18N = {
     goals_empty: "Aún no hay metas. Toca + para escribir la primera.",
     goal_achieved_badge: "¡Lograda!",
     toast_goal_added: "Meta añadida", toast_goal_updated: "Meta actualizada", toast_goal_deleted: "Meta eliminada",
+    hub_bucket_name: "Lista de deseos", hub_bucket_stat: "{done}/{total} logrado", hub_bucket_manage: "Comenzar una lista de deseos",
+    hub_study_name: "Estudio", hub_study_stat: "{done}/{total} completado", hub_study_manage: "Comenzar una lista de estudio",
+    bucket_title: "Lista de deseos", bucket_new: "Nuevo elemento", bucket_edit: "Editar elemento",
+    bucket_empty: "Aún no hay elementos. Toca + para agregar el primero.", ph_bucket_title: "Ej., Caminar el Camino de Santiago",
+    study_title: "Estudio", study_new: "Nuevo elemento de estudio", study_edit: "Editar elemento de estudio",
+    study_empty: "Aún no hay elementos de estudio. Toca + para agregar uno.", ph_study_title: "Ej., Repasar el comentario de Romanos",
+    field_subject: "Materia", subject_new: "Añadir materia", ph_subject_name: "Ej., Estudio bíblico, Español, Teología",
+    subject_none_hint: "Primero añade una materia.",
+    field_study_range: "Rango", ph_study_range: "Ej., Cap. 3-5, páginas 1-50",
+    checklist_stamp: "Logrado",
+    toast_bucket_added: "Elemento añadido a la lista", toast_study_added: "Elemento de estudio añadido",
+    toast_subject_added: "Materia añadida", toast_deleted: "Eliminado",
     report_title: "Informes por Tribu y Departamento",
     report_month_collect: "Recopilación de este mes", report_done_of: "{done} / {total} completado",
     report_days_left: "Quedan {n} días · ", report_pending_count: "{n} sin enviar",
@@ -546,7 +584,7 @@ const I18N = {
     field_content: "Contenido", ph_diary: "Qué pasó hoy, en qué piensas, por qué estás agradecido …",
     rec_tab_all: "Todos", rec_empty_cat: "Aún no hay registros de '{name}'.",
     rec_cat_new: "Nueva Categoría de Registro", rec_cat_edit: "Editar Categoría de Registro", ph_rec_cat_name: "Ej., Oración matutina, Visitación, Bitácora de formación …",
-    field_record_cat: "Categoría", field_verse: "Versículo (opcional)", ph_verse: "Ej., Juan 3:16",
+    field_record_cat: "Categoría", field_mood: "Estado de ánimo (opcional)", field_verse: "Versículo (opcional)", ph_verse: "Ej., Juan 3:16",
     field_place: "Lugar", ph_place: "Ej., visita a la zona OO, apoyo en el evento OO",
     field_meditation_text: "Reflexión", ph_meditation: "Escribe lo que este pasaje significa para ti",
     ph_dispatch: "Qué ocurrió durante la salida y los resultados",
@@ -599,6 +637,8 @@ function defaultState() {
       { id: "meditation", name: "묵상", color: COLOR_PRESETS[3] },
       { id: "dispatch", name: "파견일지", color: COLOR_PRESETS[4] },
     ],
+    checklists: [],
+    studySubjects: [],
     settings: {
       notifAsked: false, calendarMode: "month", theme: "system", accent: COLOR_PRESETS[0], exchangeRates: {}, lang: "ko",
       homeTz: { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
@@ -619,6 +659,7 @@ let moneyCursor = todayISO().slice(0, 7); // "YYYY-MM", month viewed in 가계�
 let selectedDate = todayISO();
 let pendingAttachment = null; // dataURL staged while a task modal is open
 let recordsTab = "all"; // "all" | "diary" | "meditation" | "dispatch" - filter for the records screen
+let checklistSubjectTab = "all"; // "all" | a studySubjects id - filter for the 공부 checklist screen
 let wkHalf = null; // "first" (Mon-Wed) | "second" (Thu-Sun) | null (auto-pick the half containing today)
 
 function loadState() {
@@ -932,7 +973,7 @@ function computeStreak(t) {
 
 /* ---------------- rendering: shell ---------------- */
 
-const HUB_VIEWS = ["hub", "report", "money", "diary", "goals"];
+const HUB_VIEWS = ["hub", "report", "money", "diary", "goals", "bucketlist", "study"];
 function setActiveNav() {
   const group = HUB_VIEWS.includes(currentView) ? "hub" : currentView;
   document.querySelectorAll(".nav-btn").forEach((b) => {
@@ -951,6 +992,22 @@ function scrollWeekGridToNow() {
   }
 }
 
+// In slide mode the hour axis/corners are horizontally scrolled with everything
+// else (position:static, set in renderWeekView) because CSS `position: sticky`
+// is unreliable on some Android WebViews when a grid scrolls on both axes at
+// once. Pin them manually by counter-shifting with the live scrollLeft instead.
+function bindWeekSlideAxisPin() {
+  const scroller = document.getElementById("wk-grid-scroll");
+  if (!scroller || scroller.dataset.slide !== "true") return;
+  const pinned = scroller.querySelectorAll(".wk-corner, .wk-corner-allday, .wk-axis");
+  const sync = () => {
+    const x = scroller.scrollLeft;
+    pinned.forEach((el) => { el.style.transform = `translateX(${x}px)`; });
+  };
+  sync();
+  scroller.addEventListener("scroll", sync, { passive: true });
+}
+
 function render() {
   setActiveNav();
   const root = document.getElementById("view-root");
@@ -958,12 +1015,15 @@ function render() {
   else if (currentView === "calendar") {
     root.innerHTML = renderCalendar();
     scrollWeekGridToNow();
+    bindWeekSlideAxisPin();
   }
   else if (currentView === "hub") root.innerHTML = renderHub();
   else if (currentView === "report") root.innerHTML = renderReport();
   else if (currentView === "money") root.innerHTML = renderMoney();
   else if (currentView === "diary") root.innerHTML = renderDiary();
   else if (currentView === "goals") root.innerHTML = renderGoals();
+  else if (currentView === "bucketlist") root.innerHTML = renderChecklist("bucket");
+  else if (currentView === "study") root.innerHTML = renderChecklist("study");
   else if (currentView === "settings") root.innerHTML = renderSettings();
 }
 
@@ -1245,12 +1305,12 @@ function renderWeekView() {
     </div>
     <div class="wk-grid-scroll" id="wk-grid-scroll" data-slide="${isSlide}">
       <div class="wk-grid" style="grid-template-columns:${axisColsCss};">
-        <div class="wk-corner" style="grid-column:span ${axisCount || 1};"></div>
+        <div class="wk-corner" style="grid-column:span ${axisCount || 1};${isSlide ? "position:static;z-index:5;" : ""}"></div>
         ${headCells}
-        <div class="wk-corner-allday" style="grid-column:span ${axisCount || 1};"></div>
+        <div class="wk-corner-allday" style="grid-column:span ${axisCount || 1};${isSlide ? "position:static;z-index:4;" : ""}"></div>
         ${allDayCells}
-        ${showHomeAxis ? `<div class="wk-axis">${homeAxisCells}</div>` : ""}
-        ${showSecAxis ? `<div class="wk-axis wk-axis-sec" style="left:${showHomeAxis ? 44 : 0}px;">${secAxisCells}</div>` : ""}
+        ${showHomeAxis ? `<div class="wk-axis" style="${isSlide ? "position:static;z-index:2;" : ""}">${homeAxisCells}</div>` : ""}
+        ${showSecAxis ? `<div class="wk-axis wk-axis-sec" style="${isSlide ? "position:static;z-index:2;" : `left:${showHomeAxis ? 44 : 0}px;`}">${secAxisCells}</div>` : ""}
         ${bodyCells}
       </div>
     </div>
@@ -1337,6 +1397,8 @@ function renderHub() {
   const total = state.departments.length;
   const thisMonth = monthTotals(todayISO().slice(0, 7));
   const lastDiary = [...state.diary].sort((a, b) => b.date.localeCompare(a.date))[0];
+  const bucketList = state.checklists.filter((c) => c.list === "bucket");
+  const studyList = state.checklists.filter((c) => c.list === "study");
 
   const tile = (view, label, stat, icon) => `
     <button class="hub-tile" data-action="goto-${view}">
@@ -1356,6 +1418,10 @@ function renderHub() {
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a2 2 0 0 1 2 2v13a1 1 0 0 1-1.55.83L14 17H6a2 2 0 0 1-2-2V4z"/><path d="M8 9h8M8 13h5"/></svg>`)}
       ${tile("goals", t("hub_goals_name"), state.goals.length ? t("hub_goals_stat", { done: state.goals.filter((g) => g.done).length, total: state.goals.length }) : t("hub_goals_manage"),
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18"/><path d="M5 4c2-1 3 1 6 1s4-2 6-1v9c-2-1-3 1-6 1s-4-2-6-1z"/></svg>`)}
+      ${tile("bucketlist", t("hub_bucket_name"), bucketList.length ? t("hub_bucket_stat", { done: bucketList.filter((c) => c.done).length, total: bucketList.length }) : t("hub_bucket_manage"),
+        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`)}
+      ${tile("study", t("hub_study_name"), studyList.length ? t("hub_study_stat", { done: studyList.filter((c) => c.done).length, total: studyList.length }) : t("hub_study_manage"),
+        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`)}
     </div>
   `;
 }
@@ -1500,7 +1566,7 @@ function renderDiary() {
     const subtitle = cat === "meditation" && e.verse ? e.verse : cat === "dispatch" && e.place ? e.place : "";
     return `
     <button class="diary-card" data-action="open-diary" data-id="${e.id}">
-      <div class="diary-date"><span class="tag" style="${catObj ? `color:${catObj.color};background:color-mix(in oklch, ${catObj.color} 14%, var(--card));` : ""}">${escapeHtml(catObj ? catObj.name : cat)}</span>${formatDateTitle(e.date)}</div>
+      <div class="diary-date">${e.mood ? `<span class="mood-emoji">${e.mood}</span>` : ""}<span class="tag" style="${catObj ? `color:${catObj.color};background:color-mix(in oklch, ${catObj.color} 14%, var(--card));` : ""}">${escapeHtml(catObj ? catObj.name : cat)}</span>${formatDateTitle(e.date)}</div>
       ${subtitle ? `<div class="diary-sub">${escapeHtml(subtitle)}</div>` : ""}
       <div class="diary-preview">${escapeHtml(e.text.slice(0, 60))}${e.text.length > 60 ? "…" : ""}</div>
     </button>`;
@@ -1550,6 +1616,57 @@ function renderGoals() {
     </button>`)}
     <div class="section" style="padding-top:14px;">
       ${goals.length ? goals.map(row).join("") : emptyState(t("goals_empty"))}
+    </div>
+  `;
+}
+
+/* ---------------- rendering: checklists (bucket list / study) ---------------- */
+
+function studySubjectById(id) { return state.studySubjects.find((s) => s.id === id); }
+
+function renderChecklist(list) {
+  const isStudy = list === "study";
+  const subjectTab = isStudy ? (checklistSubjectTab || "all") : "all";
+  let items = state.checklists.filter((c) => c.list === list);
+  if (isStudy && subjectTab !== "all") items = items.filter((c) => c.subject === subjectTab);
+  items = [...items].sort((a, b) => (a.done !== b.done ? (a.done ? 1 : -1) : b.createdAt - a.createdAt));
+
+  const row = (c) => {
+    const subj = isStudy ? studySubjectById(c.subject) : null;
+    return `<button class="task-card ${c.done ? "done" : ""}" data-action="open-checklist-item" data-list="${list}" data-id="${c.id}">
+      <span class="task-check" data-action="toggle-checklist-done" data-list="${list}" data-id="${c.id}" role="button" aria-label="${t("mark_done_aria")}">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      </span>
+      <span class="task-body">
+        <span class="task-title">${escapeHtml(c.title)}</span>
+        ${isStudy ? `<span class="task-tags">
+          ${subj ? `<span class="tag" style="color:${subj.color};background:color-mix(in oklch, ${subj.color} 14%, var(--card));">${escapeHtml(subj.name)}</span>` : ""}
+          ${c.range ? `<span class="tag">${escapeHtml(c.range)}</span>` : ""}
+        </span>` : ""}
+      </span>
+      <span class="task-side">
+        ${c.done ? `<span class="stamp-badge">${t("checklist_stamp")}</span>` : ""}
+      </span>
+    </button>`;
+  };
+
+  const subjectChips = isStudy ? `
+    <div class="chip-row">
+      <button class="chip" data-active="${subjectTab === "all"}" data-action="set-study-subject-tab" data-tab="all">${t("rec_tab_all")}</button>
+      ${state.studySubjects.map((s) => `
+        <button class="chip" data-cat="true" data-active="${subjectTab === s.id}" data-action="set-study-subject-tab" data-tab="${s.id}" style="${chipTintStyle(s.color)}">
+          <span class="dot"></span>${escapeHtml(s.name)}
+        </button>`).join("")}
+      <button class="chip-add" data-action="open-add-study-subject">+</button>
+    </div>` : "";
+
+  return `
+    ${subHeader(t(isStudy ? "study_title" : "bucket_title"), `<button class="icon-btn" data-action="open-add-checklist" data-list="${list}" aria-label="${t(isStudy ? "study_new" : "bucket_new")}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>`)}
+    ${subjectChips}
+    <div class="section" style="padding-top:14px;">
+      ${items.length ? items.map(row).join("") : emptyState(t(isStudy ? "study_empty" : "bucket_empty"))}
     </div>
   `;
 }
@@ -2270,7 +2387,7 @@ function openDiaryModal(diaryId) {
       <h2>${editing ? t("diary_edit") : t("diary_new")}</h2>
       <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <form id="diary-form" data-id="${editing ? editing.id : ""}" data-category="${category}">
+    <form id="diary-form" data-id="${editing ? editing.id : ""}" data-category="${category}" data-mood="${editing?.mood || ""}">
       <div class="field">
         <label>${t("field_record_cat")}</label>
         <div class="seg" id="record-cat-seg" style="flex-wrap:wrap;">${catSeg}</div>
@@ -2278,6 +2395,12 @@ function openDiaryModal(diaryId) {
       <div class="field" style="margin-top:14px;">
         <label>${t("field_date")}</label>
         <input type="date" name="date" required value="${editing?.date || todayISO()}">
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>${t("field_mood")}</label>
+        <div class="mood-row" id="mood-row">
+          ${MOOD_EMOJIS.map((em) => `<button type="button" class="mood-btn" data-active="${(editing?.mood || "") === em}" data-action="pick-diary-mood" data-val="${em}">${em}</button>`).join("")}
+        </div>
       </div>
       <div class="field" id="record-verse-field" style="margin-top:14px; ${category === "meditation" ? "" : "display:none;"}">
         <label>${t("field_verse")}</label>
@@ -2307,6 +2430,7 @@ function openDiaryModal(diaryId) {
     const payload = {
       category: cat,
       date: fd.get("date"),
+      mood: e.target.dataset.mood || "",
       text,
       verse: cat === "meditation" ? fd.get("verse").trim() : "",
       place: cat === "dispatch" ? place : "",
@@ -2371,6 +2495,117 @@ function toggleGoalDone(id) {
 function deleteGoal(id) {
   state.goals = state.goals.filter((g) => g.id !== id);
   saveState(); closeSheet(); render(); showToast(t("toast_goal_deleted"));
+}
+
+/* ---------------- modal: checklist item (bucket list / study) ---------------- */
+
+function openChecklistModal(list, itemId) {
+  const isStudy = list === "study";
+  const editing = itemId ? state.checklists.find((c) => c.id === itemId) : null;
+  const subject = editing?.subject || (isStudy && checklistSubjectTab !== "all" ? checklistSubjectTab : (state.studySubjects[0]?.id || ""));
+  const subjectSeg = isStudy ? state.studySubjects.map((s) => `<button type="button" class="seg-btn small" data-active="${subject === s.id}" data-action="pick-study-subject" data-val="${s.id}">${escapeHtml(s.name)}</button>`).join("") : "";
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row">
+      <h2>${editing ? t(isStudy ? "study_edit" : "bucket_edit") : t(isStudy ? "study_new" : "bucket_new")}</h2>
+      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form id="checklist-form" data-list="${list}" data-id="${editing ? editing.id : ""}" data-subject="${subject}">
+      <div class="field">
+        <label>${t("field_title")}</label>
+        <input type="text" name="title" required value="${escapeHtml(editing?.title || "")}" placeholder="${t(isStudy ? "ph_study_title" : "ph_bucket_title")}">
+      </div>
+      ${isStudy ? `
+      <div class="field" style="margin-top:14px;">
+        <label>${t("field_subject")}</label>
+        ${state.studySubjects.length
+          ? `<div class="seg" id="study-subject-seg" style="flex-wrap:wrap;">${subjectSeg}</div>`
+          : `<div class="hint">${t("subject_none_hint")}</div>`}
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>${t("field_study_range")}</label>
+        <input type="text" name="range" value="${escapeHtml(editing?.range || "")}" placeholder="${t("ph_study_range")}">
+      </div>` : ""}
+      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_save")}</button>
+      ${editing ? `<button type="button" class="danger-btn" style="margin-top:10px;" data-action="delete-checklist-item" data-list="${list}" data-id="${editing.id}">${t("btn_delete")}</button>` : ""}
+    </form>
+  `);
+  document.getElementById("checklist-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const fd = new FormData(form);
+    const id = form.dataset.id;
+    const title = fd.get("title").trim();
+    if (!title) return;
+    const payload = { title, list };
+    if (isStudy) {
+      payload.subject = form.dataset.subject || "";
+      payload.range = fd.get("range").trim();
+    }
+    if (id) {
+      Object.assign(state.checklists.find((c) => c.id === id), payload);
+    } else {
+      state.checklists.push({ id: uid(), done: false, createdAt: Date.now(), subject: "", range: "", ...payload });
+    }
+    saveState();
+    closeSheet();
+    render();
+    showToast(id ? t("toast_saved") : t(isStudy ? "toast_study_added" : "toast_bucket_added"));
+  });
+}
+
+function toggleChecklistDone(id) {
+  const c = state.checklists.find((x) => x.id === id);
+  if (!c) return;
+  c.done = !c.done;
+  saveState();
+  render();
+}
+
+function deleteChecklistItem(id) {
+  state.checklists = state.checklists.filter((c) => c.id !== id);
+  saveState(); closeSheet(); render(); showToast(t("toast_deleted"));
+}
+
+function openStudySubjectModal() {
+  const usedColors = new Set(state.studySubjects.map((s) => s.color));
+  const firstFree = COLOR_PRESETS.find((c) => !usedColors.has(c)) || COLOR_PRESETS[0];
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row">
+      <h2>${t("subject_new")}</h2>
+      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form id="cat-form" data-color="${firstFree}">
+      <div class="field">
+        <label>${t("field_name")}</label>
+        <input type="text" name="name" required placeholder="${t("ph_subject_name")}">
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>${t("field_color")}</label>
+        <div class="color-row" id="color-row">
+          ${COLOR_PRESETS.map((col) => `<button type="button" class="color-swatch" data-action="pick-color" data-color="${col}" data-active="${col === firstFree}" style="background:${col};color:${col};">
+            <svg viewBox="0 0 24 24" fill="none" stroke="${contrastStroke(col)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === firstFree ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
+          </button>`).join("")}
+        </div>
+      </div>
+      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_add")}</button>
+    </form>
+  `);
+  document.getElementById("cat-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const name = fd.get("name").trim();
+    if (!name) return;
+    const color = e.target.dataset.color;
+    const id = uid();
+    state.studySubjects.push({ id, name, color });
+    checklistSubjectTab = id;
+    saveState();
+    closeSheet();
+    render();
+    showToast(t("toast_subject_added"));
+  });
 }
 
 /* ---------------- modal: add record category ---------------- */
@@ -2663,7 +2898,12 @@ document.addEventListener("click", (e) => {
     }
     case "pick-photo": document.getElementById("attach-input").click(); break;
     case "remove-photo": pendingAttachment = null; document.getElementById("attach-area").innerHTML = renderAttachArea(); break;
-    case "select-date": selectedDate = el.dataset.date; render(); break;
+    case "select-date": {
+      selectedDate = el.dataset.date;
+      weekCursor = mondayOf(selectedDate);
+      state.settings.calendarMode = "week";
+      saveState(); render(); break;
+    }
     case "cal-prev": case "cal-next": {
       const [y, m] = calendarCursor.split("-").map(Number);
       const d = new Date(y, m - 1 + (action === "cal-next" ? 1 : -1), 1);
@@ -2718,6 +2958,19 @@ document.addEventListener("click", (e) => {
     case "open-goal": openGoalModal(el.dataset.id); break;
     case "toggle-goal-done": { e.stopPropagation(); toggleGoalDone(el.dataset.id); break; }
     case "delete-goal": deleteGoal(el.dataset.id); break;
+    case "goto-bucketlist": switchView("bucketlist"); break;
+    case "goto-study": switchView("study"); break;
+    case "open-add-checklist": openChecklistModal(el.dataset.list, null); break;
+    case "open-checklist-item": openChecklistModal(el.dataset.list, el.dataset.id); break;
+    case "toggle-checklist-done": { e.stopPropagation(); toggleChecklistDone(el.dataset.id); break; }
+    case "delete-checklist-item": deleteChecklistItem(el.dataset.id); break;
+    case "pick-study-subject": {
+      document.getElementById("checklist-form").dataset.subject = el.dataset.val;
+      document.querySelectorAll("#study-subject-seg .seg-btn").forEach((b) => b.dataset.active = String(b === el));
+      break;
+    }
+    case "open-add-study-subject": openStudySubjectModal(); break;
+    case "set-study-subject-tab": { checklistSubjectTab = el.dataset.tab; render(); break; }
     case "set-records-tab": recordsTab = el.dataset.tab; render(); break;
     case "pick-record-cat": {
       const form = document.getElementById("diary-form");
@@ -2729,6 +2982,13 @@ document.addEventListener("click", (e) => {
       placeField.querySelector("input").required = el.dataset.val === "dispatch";
       document.getElementById("record-text-label").textContent = recordTextLabel(el.dataset.val);
       document.getElementById("record-text-input").placeholder = recordTextPlaceholder(el.dataset.val);
+      break;
+    }
+    case "pick-diary-mood": {
+      const form = document.getElementById("diary-form");
+      const wasActive = el.dataset.active === "true";
+      form.dataset.mood = wasActive ? "" : el.dataset.val;
+      document.querySelectorAll("#mood-row .mood-btn").forEach((b) => b.dataset.active = String(!wasActive && b === el));
       break;
     }
 
@@ -2791,6 +3051,8 @@ document.getElementById("btn-add-task").addEventListener("click", () => {
   if (currentView === "money") openTxnModal(null);
   else if (currentView === "diary") openDiaryModal(null);
   else if (currentView === "goals") openGoalModal(null);
+  else if (currentView === "bucketlist") openChecklistModal("bucket", null);
+  else if (currentView === "study") openChecklistModal("study", null);
   else openTaskModal(null);
 });
 
