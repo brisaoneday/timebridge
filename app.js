@@ -29,16 +29,6 @@ function contrastStroke(oklchColor) {
   return lightness >= 70 ? "oklch(25% 0.02 260)" : "white";
 }
 
-const BASE_CURRENCY = "GTQ";
-const CURRENCY_PRESETS = [
-  { code: "GTQ", symbol: "Q", name: "과테말라 케찰" },
-  { code: "KRW", symbol: "₩", name: "대한민국 원" },
-  { code: "USD", symbol: "$", name: "미국 달러" },
-  { code: "EUR", symbol: "€", name: "유로" },
-];
-const EXPENSE_CATS = ["식비", "교통", "생활용품", "통신비", "주거", "의료", "여가", "경조사", "기타"];
-const INCOME_CATS = ["급여", "사업", "용돈", "송금", "기타"];
-const ACCOUNT_TYPES = ["은행", "카드", "현금", "기타"];
 
 const TZ_PRESETS = [
   // 북중미
@@ -253,11 +243,10 @@ const I18N = {
     section_overdue: "지난", section_today: "오늘", section_week: "이번 주", section_later: "다음", section_done: "완료됨",
     chip_all: "전체", delta_hours: "{sign}{n}시간",
     today_badge: "오늘",
-    cal_empty: "이 날짜엔 등록된 업무가 없어요.",
+    cal_empty: "이 날짜엔 등록된 업무가 없어요.", goto_week_label: "주간 보기",
     cal_month: "월", cal_week: "주",
     hub_title: "더보기",
     hub_report_name: "보고현황", hub_report_manage: "지파·부서 관리", hub_report_stat: "{done}/{total} 완료",
-    hub_money_name: "가계부", hub_money_stat: "이번 달 {amt}",
     hub_diary_name: "기록", hub_diary_recent: "최근 · {date}", hub_diary_none: "기록 없음",
     hub_goals_name: "목표", hub_goals_stat: "{done}/{total} 달성", hub_goals_manage: "목표 설정하기",
     goals_title: "목표", goal_new: "새 목표", goal_edit: "목표 수정",
@@ -277,6 +266,15 @@ const I18N = {
     checklist_stamp: "달성",
     toast_bucket_added: "버킷리스트를 추가했어요", toast_study_added: "공부 항목을 추가했어요",
     toast_subject_added: "과목을 추가했어요", toast_deleted: "삭제했어요",
+    hub_habits_name: "습관", hub_habits_stat: "오늘 {done}/{total}", hub_habits_manage: "습관 추가하기",
+    habits_title: "습관", habit_new: "새 습관", habit_edit: "습관 수정",
+    habits_empty: "아직 등록된 습관이 없어요. + 버튼으로 첫 습관을 추가해보세요.", ph_habit_title: "예: 물 8잔 마시기, 운동하기",
+    habit_dashboard: "대시보드", range_7d: "7일", range_14d: "14일", range_month: "이번 달",
+    toast_habit_added: "습관을 추가했어요",
+    hub_todo_name: "할 일", hub_todo_stat: "{done}/{total} 완료", hub_todo_manage: "할 일 추가하기",
+    todo_title: "할 일", todo_new: "새 할 일", todo_edit: "할 일 수정",
+    todo_empty: "아직 등록된 할 일이 없어요. + 버튼으로 첫 항목을 적어보세요.", ph_todo_title: "예: 쿠팡 주문, 양말 사기",
+    toast_todo_added: "할 일을 추가했어요",
     report_title: "지파·부서 보고 현황",
     report_month_collect: "이번 달 보고 취합", report_done_of: "{done} / {total} 완료",
     report_days_left: "마감까지 {n}일 남음 · ", report_pending_count: "미제출 {n}건",
@@ -286,10 +284,6 @@ const I18N = {
     dept_add_aria: "부서 추가",
     status_미제출: "미제출", status_검토중: "검토중", status_제출완료: "제출완료",
     submitted_on: "제출됨",
-    money_title: "가계부", money_income: "수입", money_expense: "지출", money_balance: "잔액",
-    money_convert_note: "다른 통화 계좌는 {base} 기준으로 환산해서 합산했어요.",
-    money_rates: "환율", money_rate_hint: "{base} 기준 환율이에요. 실제 환율에 맞게 직접 입력해서 업데이트해주세요.",
-    money_txn_history: "거래 내역", money_empty: "이 달엔 기록된 거래가 없어요.",
     diary_title: "기록", diary_empty: "아직 기록이 없어요. + 버튼으로 새 기록을 남겨보세요.",
     settings_title: "설정",
     settings_cat_group: "카테고리 관리", settings_cat_val: "할 일 · 용어정리 ›", settings_add_cat: "새 카테고리 추가",
@@ -336,16 +330,6 @@ const I18N = {
     dept_new: "지파·부서 추가", dept_edit: "지파·부서 수정",
     field_contact: "담당자 (선택)", ph_contact: "예: 김OO 전도사", field_status: "상태",
     clock_add_title: "도시 추가", clock_empty: "추가할 수 있는 도시를 모두 등록했어요.",
-    txn_new: "새 거래 추가", txn_edit: "거래 수정",
-    seg_expense: "지출", seg_income: "수입",
-    field_amount: "금액", field_category: "카테고리", field_account: "계좌",
-    field_memo_opt: "메모 (선택)", ph_txn_memo: "예: 시장, 버스비 …",
-    toast_txn_added: "거래를 추가했어요", toast_txn_updated: "거래를 수정했어요", toast_txn_deleted: "거래를 삭제했어요",
-    account_new: "계좌 추가", account_edit: "계좌 수정",
-    ph_account_name: "예: 카카오뱅크, 신한카드", field_acct_type: "종류", field_start_balance: "시작 잔액",
-    acct_hint: "계좌를 추가한 시점의 잔액이에요. 이후 거래 내역이 여기에 더해지고 빠져요.",
-    field_currency: "통화", field_rate: "환율 (1 {code} = ? {base})", rate_hint: "가계부 화면에서 언제든 다시 수정할 수 있어요.",
-    toast_min_account: "최소 1개의 계좌는 있어야 해요", toast_account_deleted: "계좌를 삭제했어요",
     diary_new: "새 기록 추가", diary_edit: "기록 수정",
     field_content: "내용", ph_diary: "오늘 있었던 일, 생각, 감사한 것 …",
     rec_tab_all: "전체", rec_empty_cat: "아직 '{name}' 기록이 없어요.",
@@ -370,11 +354,10 @@ const I18N = {
     section_overdue: "Overdue", section_today: "Today", section_week: "This week", section_later: "Later", section_done: "Done",
     chip_all: "All", delta_hours: "{sign}{n}h",
     today_badge: "Today",
-    cal_empty: "No tasks on this date.",
+    cal_empty: "No tasks on this date.", goto_week_label: "Week view",
     cal_month: "Month", cal_week: "Week",
     hub_title: "More",
     hub_report_name: "Reports", hub_report_manage: "Manage tribes/depts", hub_report_stat: "{done}/{total} done",
-    hub_money_name: "Money", hub_money_stat: "This month {amt}",
     hub_diary_name: "Records", hub_diary_recent: "Last · {date}", hub_diary_none: "No entries",
     hub_goals_name: "Goals", hub_goals_stat: "{done}/{total} achieved", hub_goals_manage: "Set a goal",
     goals_title: "Goals", goal_new: "New Goal", goal_edit: "Edit Goal",
@@ -394,6 +377,15 @@ const I18N = {
     checklist_stamp: "Done",
     toast_bucket_added: "Bucket list item added", toast_study_added: "Study item added",
     toast_subject_added: "Subject added", toast_deleted: "Deleted",
+    hub_habits_name: "Habits", hub_habits_stat: "{done}/{total} today", hub_habits_manage: "Add a habit",
+    habits_title: "Habits", habit_new: "New Habit", habit_edit: "Edit Habit",
+    habits_empty: "No habits yet. Tap + to add your first one.", ph_habit_title: "e.g., Drink 8 glasses of water, Exercise",
+    habit_dashboard: "Dashboard", range_7d: "7d", range_14d: "14d", range_month: "This month",
+    toast_habit_added: "Habit added",
+    hub_todo_name: "To-do", hub_todo_stat: "{done}/{total} done", hub_todo_manage: "Add a to-do",
+    todo_title: "To-do", todo_new: "New To-do", todo_edit: "Edit To-do",
+    todo_empty: "No to-dos yet. Tap + to add your first one.", ph_todo_title: "e.g., Order from Coupang, Buy socks",
+    toast_todo_added: "To-do added",
     report_title: "Tribe & Department Reports",
     report_month_collect: "This month's collection", report_done_of: "{done} / {total} done",
     report_days_left: "{n} days left · ", report_pending_count: "{n} not submitted",
@@ -403,10 +395,6 @@ const I18N = {
     dept_add_aria: "Add department",
     status_미제출: "Not submitted", status_검토중: "In review", status_제출완료: "Submitted",
     submitted_on: "Submitted",
-    money_title: "Money", money_income: "Income", money_expense: "Expense", money_balance: "Balance",
-    money_convert_note: "Accounts in other currencies are converted to {base} and combined.",
-    money_rates: "Exchange rates", money_rate_hint: "Rates are against {base}. Update them yourself to match the real rate.",
-    money_txn_history: "Transactions", money_empty: "No transactions this month.",
     diary_title: "Records", diary_empty: "No records yet. Tap + to add one.",
     settings_title: "Settings",
     settings_cat_group: "Categories", settings_cat_val: "Tasks · Glossary ›", settings_add_cat: "Add category",
@@ -453,16 +441,6 @@ const I18N = {
     dept_new: "Add Tribe/Department", dept_edit: "Edit Tribe/Department",
     field_contact: "Contact (optional)", ph_contact: "e.g., Evangelist Kim", field_status: "Status",
     clock_add_title: "Add City", clock_empty: "You've added every available city.",
-    txn_new: "Add New Transaction", txn_edit: "Edit Transaction",
-    seg_expense: "Expense", seg_income: "Income",
-    field_amount: "Amount", field_category: "Category", field_account: "Account",
-    field_memo_opt: "Memo (optional)", ph_txn_memo: "e.g., groceries, bus fare …",
-    toast_txn_added: "Transaction added", toast_txn_updated: "Transaction updated", toast_txn_deleted: "Transaction deleted",
-    account_new: "Add Account", account_edit: "Edit Account",
-    ph_account_name: "e.g., Chase Checking, Visa card", field_acct_type: "Type", field_start_balance: "Starting balance",
-    acct_hint: "The balance when you added this account. Transactions add to and subtract from it after that.",
-    field_currency: "Currency", field_rate: "Rate (1 {code} = ? {base})", rate_hint: "You can update this again anytime from the Money screen.",
-    toast_min_account: "You need at least one account", toast_account_deleted: "Account deleted",
     diary_new: "New Record", diary_edit: "Edit Record",
     field_content: "Content", ph_diary: "What happened today, what you're thinking, what you're grateful for …",
     rec_tab_all: "All", rec_empty_cat: "No {name} entries yet.",
@@ -487,11 +465,10 @@ const I18N = {
     section_overdue: "Atrasadas", section_today: "Hoy", section_week: "Esta semana", section_later: "Más adelante", section_done: "Completadas",
     chip_all: "Todo", delta_hours: "{sign}{n} h",
     today_badge: "Hoy",
-    cal_empty: "No hay tareas en esta fecha.",
+    cal_empty: "No hay tareas en esta fecha.", goto_week_label: "Ver semana",
     cal_month: "Mes", cal_week: "Semana",
     hub_title: "Más",
     hub_report_name: "Informes", hub_report_manage: "Gestionar tribus/deptos.", hub_report_stat: "{done}/{total} completado",
-    hub_money_name: "Finanzas", hub_money_stat: "Este mes {amt}",
     hub_diary_name: "Registros", hub_diary_recent: "Última · {date}", hub_diary_none: "Sin registros",
     hub_goals_name: "Metas", hub_goals_stat: "{done}/{total} logradas", hub_goals_manage: "Definir una meta",
     goals_title: "Metas", goal_new: "Nueva Meta", goal_edit: "Editar Meta",
@@ -511,6 +488,15 @@ const I18N = {
     checklist_stamp: "Logrado",
     toast_bucket_added: "Elemento añadido a la lista", toast_study_added: "Elemento de estudio añadido",
     toast_subject_added: "Materia añadida", toast_deleted: "Eliminado",
+    hub_habits_name: "Hábitos", hub_habits_stat: "{done}/{total} hoy", hub_habits_manage: "Añadir un hábito",
+    habits_title: "Hábitos", habit_new: "Nuevo hábito", habit_edit: "Editar hábito",
+    habits_empty: "Aún no hay hábitos. Toca + para agregar el primero.", ph_habit_title: "Ej., Beber 8 vasos de agua, Hacer ejercicio",
+    habit_dashboard: "Panel", range_7d: "7 días", range_14d: "14 días", range_month: "Este mes",
+    toast_habit_added: "Hábito añadido",
+    hub_todo_name: "Pendientes", hub_todo_stat: "{done}/{total} completado", hub_todo_manage: "Añadir un pendiente",
+    todo_title: "Pendientes", todo_new: "Nuevo pendiente", todo_edit: "Editar pendiente",
+    todo_empty: "Aún no hay pendientes. Toca + para agregar el primero.", ph_todo_title: "Ej., Pedido en Coupang, Comprar calcetines",
+    toast_todo_added: "Pendiente añadido",
     report_title: "Informes por Tribu y Departamento",
     report_month_collect: "Recopilación de este mes", report_done_of: "{done} / {total} completado",
     report_days_left: "Quedan {n} días · ", report_pending_count: "{n} sin enviar",
@@ -520,10 +506,6 @@ const I18N = {
     dept_add_aria: "Agregar departamento",
     status_미제출: "Sin enviar", status_검토중: "En revisión", status_제출완료: "Enviado",
     submitted_on: "Enviado",
-    money_title: "Finanzas", money_income: "Ingresos", money_expense: "Gastos", money_balance: "Saldo",
-    money_convert_note: "Las cuentas en otras monedas se convirtieron a {base} y se sumaron.",
-    money_rates: "Tipo de cambio", money_rate_hint: "Tasas respecto a {base}. Actualízalas tú mismo según el tipo de cambio real.",
-    money_txn_history: "Transacciones", money_empty: "No hay transacciones este mes.",
     diary_title: "Registros", diary_empty: "Aún no hay registros. Toca + para añadir uno.",
     settings_title: "Ajustes",
     settings_cat_group: "Categorías", settings_cat_val: "Tareas · Glosario ›", settings_add_cat: "Añadir categoría",
@@ -570,16 +552,6 @@ const I18N = {
     dept_new: "Añadir Tribu/Departamento", dept_edit: "Editar Tribu/Departamento",
     field_contact: "Responsable (opcional)", ph_contact: "Ej., Evangelista Kim", field_status: "Estado",
     clock_add_title: "Añadir Ciudad", clock_empty: "Ya añadiste todas las ciudades disponibles.",
-    txn_new: "Añadir Nueva Transacción", txn_edit: "Editar Transacción",
-    seg_expense: "Gasto", seg_income: "Ingreso",
-    field_amount: "Monto", field_category: "Categoría", field_account: "Cuenta",
-    field_memo_opt: "Nota (opcional)", ph_txn_memo: "Ej., mercado, pasaje de bus …",
-    toast_txn_added: "Transacción añadida", toast_txn_updated: "Transacción actualizada", toast_txn_deleted: "Transacción eliminada",
-    account_new: "Añadir Cuenta", account_edit: "Editar Cuenta",
-    ph_account_name: "Ej., Banco Industrial, Tarjeta Visa", field_acct_type: "Tipo", field_start_balance: "Saldo inicial",
-    acct_hint: "El saldo al momento de añadir esta cuenta. Las transacciones se suman y restan a partir de aquí.",
-    field_currency: "Moneda", field_rate: "Tipo de cambio (1 {code} = ? {base})", rate_hint: "Puedes actualizarlo de nuevo cuando quieras desde la pantalla de Finanzas.",
-    toast_min_account: "Debe haber al menos una cuenta", toast_account_deleted: "Cuenta eliminada",
     diary_new: "Nuevo Registro", diary_edit: "Editar Registro",
     field_content: "Contenido", ph_diary: "Qué pasó hoy, en qué piensas, por qué estás agradecido …",
     rec_tab_all: "Todos", rec_empty_cat: "Aún no hay registros de '{name}'.",
@@ -625,11 +597,6 @@ function defaultState() {
       { id: uid(), tz: "America/Guatemala", label: "과테말라시티" },
       { id: uid(), tz: "Asia/Seoul", label: "한국 · 서울" },
     ],
-    accounts: [
-      { id: "cash", name: "현금", type: "현금", startBalance: 0, currency: BASE_CURRENCY },
-      { id: "bank", name: "은행 계좌", type: "은행", startBalance: 0, currency: BASE_CURRENCY },
-    ],
-    transactions: [],
     diary: [],
     goals: [],
     recordCategories: [
@@ -639,12 +606,14 @@ function defaultState() {
     ],
     checklists: [],
     studySubjects: [],
+    habits: [],
     settings: {
-      notifAsked: false, calendarMode: "month", theme: "system", accent: COLOR_PRESETS[0], exchangeRates: {}, lang: "ko",
+      notifAsked: false, calendarMode: "month", theme: "system", accent: COLOR_PRESETS[0], lang: "ko",
       homeTz: { tz: "America/Guatemala", label: "과테말라시티", flag: "🇬🇹" },
       secondaryTz: { tz: "Asia/Seoul", label: "한국 · 서울", flag: "🇰🇷" },
       wkAxisMode: "both",
       wkStyleMode: "halves",
+      habitDashRange: "7",
     },
   };
 }
@@ -655,7 +624,6 @@ let state = loadState();
 let currentView = "home";
 let calendarCursor = todayISO().slice(0, 7); // "YYYY-MM"
 let weekCursor = mondayOf(todayISO()); // ISO date of the Monday for the viewed week
-let moneyCursor = todayISO().slice(0, 7); // "YYYY-MM", month viewed in 가계부
 let selectedDate = todayISO();
 let pendingAttachment = null; // dataURL staged while a task modal is open
 let recordsTab = "all"; // "all" | "diary" | "meditation" | "dispatch" - filter for the records screen
@@ -785,57 +753,7 @@ function escapeHtml(s) {
 function catById(id) { return state.categories.find((c) => c.id === id); }
 function deptById(id) { return state.departments.find((d) => d.id === id); }
 function taskById(id) { return state.tasks.find((t) => t.id === id); }
-function accountById(id) { return state.accounts.find((a) => a.id === id); }
-function txnById(id) { return state.transactions.find((t) => t.id === id); }
 function diaryById(id) { return state.diary.find((d) => d.id === id); }
-
-function currencySymbol(code) {
-  return CURRENCY_PRESETS.find((c) => c.code === code)?.symbol || code || BASE_CURRENCY;
-}
-
-// Rate is stored as "1 unit of `code` = N units of the base currency".
-function toBaseAmount(amount, code) {
-  if (!code || code === BASE_CURRENCY) return amount;
-  const rate = state.settings.exchangeRates[code];
-  return rate ? amount * rate : 0;
-}
-
-function formatMoney(n, code) {
-  const v = Math.round(Number(n) || 0);
-  return `${currencySymbol(code || BASE_CURRENCY)} ${v.toLocaleString("en-US")}`;
-}
-
-function formatMoneySigned(n, code) {
-  const v = Math.round(Number(n) || 0);
-  const sign = v > 0 ? "+" : v < 0 ? "-" : "";
-  return `${currencySymbol(code || BASE_CURRENCY)} ${sign}${Math.abs(v).toLocaleString("en-US")}`;
-}
-
-function accountBalance(accountId) {
-  const acc = accountById(accountId);
-  if (!acc) return 0;
-  const net = state.transactions
-    .filter((t) => t.accountId === accountId)
-    .reduce((sum, t) => sum + (t.type === "income" ? t.amount : -t.amount), 0);
-  return acc.startBalance + net;
-}
-
-// Totals are converted into the base currency, since a month can span accounts
-// held in different currencies.
-function monthTotals(ym) {
-  const txns = state.transactions.filter((t) => t.date.slice(0, 7) === ym);
-  let income = 0, expense = 0;
-  txns.forEach((t) => {
-    const code = accountById(t.accountId)?.currency || BASE_CURRENCY;
-    const base = toBaseAmount(t.amount, code);
-    if (t.type === "income") income += base; else expense += base;
-  });
-  return { income, expense, net: income - expense, txns };
-}
-
-function usedForeignCurrencies() {
-  return [...new Set(state.accounts.map((a) => a.currency).filter((c) => c && c !== BASE_CURRENCY))];
-}
 
 function chipTintStyle(color) {
   return `--chip-tint: color-mix(in oklch, ${color} 14%, var(--card)); --chip-color: ${color};`;
@@ -973,7 +891,7 @@ function computeStreak(t) {
 
 /* ---------------- rendering: shell ---------------- */
 
-const HUB_VIEWS = ["hub", "report", "money", "diary", "goals", "bucketlist", "study"];
+const HUB_VIEWS = ["hub", "report", "diary", "goals", "bucketlist", "study", "habits", "todo"];
 function setActiveNav() {
   const group = HUB_VIEWS.includes(currentView) ? "hub" : currentView;
   document.querySelectorAll(".nav-btn").forEach((b) => {
@@ -1019,11 +937,12 @@ function render() {
   }
   else if (currentView === "hub") root.innerHTML = renderHub();
   else if (currentView === "report") root.innerHTML = renderReport();
-  else if (currentView === "money") root.innerHTML = renderMoney();
   else if (currentView === "diary") root.innerHTML = renderDiary();
   else if (currentView === "goals") root.innerHTML = renderGoals();
   else if (currentView === "bucketlist") root.innerHTML = renderChecklist("bucket");
   else if (currentView === "study") root.innerHTML = renderChecklist("study");
+  else if (currentView === "habits") root.innerHTML = renderHabits();
+  else if (currentView === "todo") root.innerHTML = renderChecklist("todo");
   else if (currentView === "settings") root.innerHTML = renderSettings();
 }
 
@@ -1372,7 +1291,15 @@ function renderMonthView() {
     <div class="cal-grid-head">${[0, 1, 2, 3, 4, 5, 6].map((d) => `<div>${weekdayLabel(d)}</div>`).join("")}</div>
     <div class="cal-grid">${cellsHtml}</div>
     <div class="section">
-      <div class="section-head"><h3>${selLabel}</h3><span class="count">${selTasks.length || ""}</span></div>
+      <div class="section-head">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <h3>${selLabel}</h3>
+          <button class="pill-btn" style="padding:5px 10px;display:flex;align-items:center;gap:4px;" data-action="goto-week-of-date" data-date="${selectedDate}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>${t("goto_week_label")}
+          </button>
+        </div>
+        <span class="count">${selTasks.length || ""}</span>
+      </div>
       ${selTasks.length ? selTasks.map(renderTaskCard).join("") : emptyState(t("cal_empty"))}
     </div>
   `;
@@ -1395,10 +1322,12 @@ function subHeader(title, rightHtml) {
 function renderHub() {
   const done = state.departments.filter((d) => d.status === "제출완료").length;
   const total = state.departments.length;
-  const thisMonth = monthTotals(todayISO().slice(0, 7));
   const lastDiary = [...state.diary].sort((a, b) => b.date.localeCompare(a.date))[0];
   const bucketList = state.checklists.filter((c) => c.list === "bucket");
   const studyList = state.checklists.filter((c) => c.list === "study");
+  const todoList = state.checklists.filter((c) => c.list === "todo");
+  const today = todayISO();
+  const habitDoneToday = state.habits.filter((h) => h.doneDates.includes(today)).length;
 
   const tile = (view, label, stat, icon) => `
     <button class="hub-tile" data-action="goto-${view}">
@@ -1412,8 +1341,6 @@ function renderHub() {
     <div class="hub-grid">
       ${tile("report", t("hub_report_name"), total ? t("hub_report_stat", { done, total }) : t("hub_report_manage"),
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M12 19V4M20 19v-7"/></svg>`)}
-      ${tile("money", t("hub_money_name"), t("hub_money_stat", { amt: formatMoneySigned(thisMonth.net) }),
-        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>`)}
       ${tile("diary", t("hub_diary_name"), lastDiary ? t("hub_diary_recent", { date: lastDiary.date.slice(5).replace("-", "/") }) : t("hub_diary_none"),
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a2 2 0 0 1 2 2v13a1 1 0 0 1-1.55.83L14 17H6a2 2 0 0 1-2-2V4z"/><path d="M8 9h8M8 13h5"/></svg>`)}
       ${tile("goals", t("hub_goals_name"), state.goals.length ? t("hub_goals_stat", { done: state.goals.filter((g) => g.done).length, total: state.goals.length }) : t("hub_goals_manage"),
@@ -1422,6 +1349,10 @@ function renderHub() {
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`)}
       ${tile("study", t("hub_study_name"), studyList.length ? t("hub_study_stat", { done: studyList.filter((c) => c.done).length, total: studyList.length }) : t("hub_study_manage"),
         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`)}
+      ${tile("habits", t("hub_habits_name"), state.habits.length ? t("hub_habits_stat", { done: habitDoneToday, total: state.habits.length }) : t("hub_habits_manage"),
+        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>`)}
+      ${tile("todo", t("hub_todo_name"), todoList.length ? t("hub_todo_stat", { done: todoList.filter((c) => c.done).length, total: todoList.length }) : t("hub_todo_manage"),
+        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M8 8h8M8 16h5"/></svg>`)}
     </div>
   `;
 }
@@ -1485,69 +1416,6 @@ function renderReport() {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/></svg>
       ${t("report_share_btn")}
     </button>` : ""}
-  `;
-}
-
-/* ---------------- rendering: money ---------------- */
-
-function renderMoney() {
-  const totals = monthTotals(moneyCursor);
-  const txns = [...totals.txns].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt);
-
-  const acctCards = state.accounts.map((a) => `
-    <button class="acct-card" data-action="open-account" data-id="${a.id}">
-      <div class="acct-name">${escapeHtml(a.name)}</div>
-      <div class="acct-balance">${formatMoney(accountBalance(a.id), a.currency)}</div>
-      <div class="acct-type">${escapeHtml(a.type)}</div>
-    </button>`).join("");
-
-  const txnRow = (txn) => {
-    const acc = accountById(txn.accountId);
-    const isIncome = txn.type === "income";
-    return `<button class="txn-row" data-action="open-txn" data-id="${txn.id}">
-      <div class="txn-cat ${isIncome ? "income" : "expense"}">${escapeHtml(txn.category.slice(0, 2))}</div>
-      <div class="txn-info">
-        <div class="txn-title">${escapeHtml(txn.category)}${txn.memo ? ` · ${escapeHtml(txn.memo)}` : ""}</div>
-        <div class="txn-sub">${acc ? escapeHtml(acc.name) : ""} · ${txn.date.slice(5).replace("-", "/")}</div>
-      </div>
-      <div class="txn-amt ${isIncome ? "income" : "expense"}">${isIncome ? "+" : "-"}${formatMoney(txn.amount, acc?.currency)}</div>
-    </button>`;
-  };
-
-  const foreignCurrencies = usedForeignCurrencies();
-  const rateRows = foreignCurrencies.map((code) => `
-    <div class="rate-row">
-      <span>1 ${escapeHtml(code)} =</span>
-      <input type="number" inputmode="decimal" step="0.01" min="0" data-action="set-rate" data-code="${code}" value="${state.settings.exchangeRates[code] ?? ""}" placeholder="0.00">
-      <span>${BASE_CURRENCY}</span>
-    </div>`).join("");
-
-  return `
-    ${subHeader(t("money_title"), `<button class="icon-btn" data-action="open-add-account" aria-label="${t("field_account")}">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-    </button>`)}
-    <div class="cal-header" style="padding-top:14px;">
-      <button class="cal-nav" data-action="money-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <h2>${formatMonthTitle(moneyCursor)}</h2>
-      <button class="cal-nav" data-action="money-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
-    </div>
-    <div class="progress-card" style="margin-top:14px;">
-      <div class="row"><span>${t("money_income")}</span><span style="color:oklch(75% 0.14 150);">${formatMoney(totals.income)}</span></div>
-      <div class="row"><span>${t("money_expense")}</span><span style="color:oklch(78% 0.09 30);">${formatMoney(totals.expense)}</span></div>
-      <div class="row" style="border-top:1px solid oklch(38% 0.02 260);padding-top:8px;margin-top:2px;"><span>${t("money_balance")}</span><span>${formatMoneySigned(totals.net)}</span></div>
-      ${foreignCurrencies.length ? `<div class="sub">${t("money_convert_note", { base: BASE_CURRENCY })}</div>` : ""}
-    </div>
-    <div class="acct-row">${acctCards}</div>
-    ${foreignCurrencies.length ? `
-    <div class="section" style="padding-top:8px;padding-bottom:0;">
-      <div class="section-head"><h3>${t("money_rates")}</h3></div>
-      ${rateRows}
-      <div class="hint">${t("money_rate_hint", { base: BASE_CURRENCY })}</div>
-    </div>` : ""}
-    <div class="section">
-      <div class="section-head"><h3>${t("money_txn_history")}</h3><span class="count">${txns.length || ""}</span></div>
-      ${txns.length ? txns.map(txnRow).join("") : emptyState(t("money_empty"))}
-    </div>
   `;
 }
 
@@ -1624,7 +1492,14 @@ function renderGoals() {
 
 function studySubjectById(id) { return state.studySubjects.find((s) => s.id === id); }
 
+const CHECKLIST_META = {
+  bucket: { titleKey: "bucket_title", newKey: "bucket_new", editKey: "bucket_edit", emptyKey: "bucket_empty", phKey: "ph_bucket_title", addedKey: "toast_bucket_added" },
+  study: { titleKey: "study_title", newKey: "study_new", editKey: "study_edit", emptyKey: "study_empty", phKey: "ph_study_title", addedKey: "toast_study_added" },
+  todo: { titleKey: "todo_title", newKey: "todo_new", editKey: "todo_edit", emptyKey: "todo_empty", phKey: "ph_todo_title", addedKey: "toast_todo_added" },
+};
+
 function renderChecklist(list) {
+  const meta = CHECKLIST_META[list];
   const isStudy = list === "study";
   const subjectTab = isStudy ? (checklistSubjectTab || "all") : "all";
   let items = state.checklists.filter((c) => c.list === list);
@@ -1661,14 +1536,138 @@ function renderChecklist(list) {
     </div>` : "";
 
   return `
-    ${subHeader(t(isStudy ? "study_title" : "bucket_title"), `<button class="icon-btn" data-action="open-add-checklist" data-list="${list}" aria-label="${t(isStudy ? "study_new" : "bucket_new")}">
+    ${subHeader(t(meta.titleKey), `<button class="icon-btn" data-action="open-add-checklist" data-list="${list}" aria-label="${t(meta.newKey)}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
     </button>`)}
     ${subjectChips}
     <div class="section" style="padding-top:14px;">
-      ${items.length ? items.map(row).join("") : emptyState(t(isStudy ? "study_empty" : "bucket_empty"))}
+      ${items.length ? items.map(row).join("") : emptyState(t(meta.emptyKey))}
     </div>
   `;
+}
+
+/* ---------------- rendering: habits ---------------- */
+
+function habitDone(h, iso) { return h.doneDates.includes(iso); }
+
+function renderHabits() {
+  const today = todayISO();
+  const range = state.settings.habitDashRange || "7";
+  let dashDates;
+  if (range === "month") {
+    const ym = today.slice(0, 7);
+    const [y, m] = ym.split("-").map(Number);
+    const days = new Date(y, m, 0).getDate();
+    dashDates = Array.from({ length: days }, (_, i) => `${ym}-${pad2(i + 1)}`);
+  } else {
+    const n = range === "14" ? 14 : 7;
+    dashDates = Array.from({ length: n }, (_, i) => addDaysISO(today, -(n - 1 - i)));
+  }
+
+  const todayRow = (h) => {
+    const done = habitDone(h, today);
+    return `<button class="task-card ${done ? "done" : ""}" data-action="open-habit" data-id="${h.id}">
+      <span class="task-check" data-action="toggle-habit-today" data-id="${h.id}" role="button" aria-label="${t("mark_done_aria")}" style="${done ? `color:${h.color};` : ""}">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      </span>
+      <span class="task-body"><span class="task-title">${escapeHtml(h.title)}</span></span>
+      <span class="task-side">${done ? `<span class="stamp-badge" style="border-color:${h.color};color:${h.color};">${t("checklist_stamp")}</span>` : ""}</span>
+    </button>`;
+  };
+
+  const rangeSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${range === val}" data-action="pick-habit-range" data-val="${val}">${label}</button>`;
+
+  const dashHtml = state.habits.length ? `
+    <div class="habit-dash">
+      <div class="habit-dash-row habit-dash-head">
+        <span class="habit-dash-name"></span>
+        <span class="habit-dash-days">${dashDates.map((d) => `<span class="habit-daylabel">${Number(d.slice(8))}</span>`).join("")}</span>
+      </div>
+      ${state.habits.map((h) => `
+        <div class="habit-dash-row">
+          <span class="habit-dash-name">${escapeHtml(h.title)}</span>
+          <span class="habit-dash-days">${dashDates.map((d) => `<span class="habit-dot ${habitDone(h, d) ? "on" : ""}" style="${habitDone(h, d) ? `background:${h.color};border-color:${h.color};` : ""}"></span>`).join("")}</span>
+        </div>`).join("")}
+    </div>` : "";
+
+  return `
+    ${subHeader(t("habits_title"), `<button class="icon-btn" data-action="open-add-habit" aria-label="${t("habit_new")}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>`)}
+    <div class="section" style="padding-top:14px;">
+      ${state.habits.length ? state.habits.map(todayRow).join("") : emptyState(t("habits_empty"))}
+    </div>
+    ${state.habits.length ? `
+    <div class="section" style="padding-top:4px;">
+      <div class="section-head"><h3>${t("habit_dashboard")}</h3></div>
+      <div class="seg" id="habit-range-seg" style="margin-bottom:10px;">${rangeSeg("7", t("range_7d"))}${rangeSeg("14", t("range_14d"))}${rangeSeg("month", t("range_month"))}</div>
+      ${dashHtml}
+    </div>` : ""}
+  `;
+}
+
+/* ---------------- modal: habit ---------------- */
+
+function openHabitModal(habitId) {
+  const editing = habitId ? state.habits.find((h) => h.id === habitId) : null;
+  const usedColors = new Set(state.habits.map((h) => h.color));
+  const firstFree = editing?.color || COLOR_PRESETS.find((c) => !usedColors.has(c)) || COLOR_PRESETS[0];
+  openSheet(`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title-row">
+      <h2>${editing ? t("habit_edit") : t("habit_new")}</h2>
+      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <form id="habit-form" data-id="${editing ? editing.id : ""}" data-color="${firstFree}">
+      <div class="field">
+        <label>${t("field_title")}</label>
+        <input type="text" name="title" required value="${escapeHtml(editing?.title || "")}" placeholder="${t("ph_habit_title")}">
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>${t("field_color")}</label>
+        <div class="color-row" id="color-row">
+          ${COLOR_PRESETS.map((col) => `<button type="button" class="color-swatch" data-action="pick-color" data-color="${col}" data-active="${col === firstFree}" style="background:${col};color:${col};">
+            <svg viewBox="0 0 24 24" fill="none" stroke="${contrastStroke(col)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="${col === firstFree ? "" : "display:none;"}"><path d="M5 12l5 5L20 7"/></svg>
+          </button>`).join("")}
+        </div>
+      </div>
+      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_save")}</button>
+      ${editing ? `<button type="button" class="danger-btn" style="margin-top:10px;" data-action="delete-habit" data-id="${editing.id}">${t("btn_delete")}</button>` : ""}
+    </form>
+  `);
+  document.getElementById("habit-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const id = e.target.dataset.id;
+    const title = fd.get("title").trim();
+    if (!title) return;
+    const color = e.target.dataset.color;
+    if (id) {
+      Object.assign(state.habits.find((h) => h.id === id), { title, color });
+    } else {
+      state.habits.push({ id: uid(), title, color, createdAt: Date.now(), doneDates: [] });
+    }
+    saveState();
+    closeSheet();
+    render();
+    showToast(id ? t("toast_saved") : t("toast_habit_added"));
+  });
+}
+
+function toggleHabitToday(id) {
+  const h = state.habits.find((x) => x.id === id);
+  if (!h) return;
+  const today = todayISO();
+  const idx = h.doneDates.indexOf(today);
+  if (idx === -1) h.doneDates.push(today);
+  else h.doneDates.splice(idx, 1);
+  saveState();
+  render();
+}
+
+function deleteHabit(id) {
+  state.habits = state.habits.filter((h) => h.id !== id);
+  saveState(); closeSheet(); render(); showToast(t("toast_deleted"));
 }
 
 /* ---------------- rendering: settings ---------------- */
@@ -2216,162 +2215,6 @@ function openDeptModal(deptId) {
   });
 }
 
-/* ---------------- modal: transaction ---------------- */
-
-function openTxnModal(txnId) {
-  const editing = txnId ? txnById(txnId) : null;
-  const type = editing?.type || "expense";
-  const cats = type === "income" ? INCOME_CATS : EXPENSE_CATS;
-  const cat = editing?.category || cats[0];
-
-  openSheet(`
-    <div class="sheet-handle"></div>
-    <div class="sheet-title-row">
-      <h2>${editing ? t("txn_edit") : t("txn_new")}</h2>
-      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    </div>
-    <form id="txn-form" data-txn-id="${editing ? editing.id : ""}" data-type="${type}">
-      <div class="seg">
-        <button type="button" class="seg-btn" data-active="${type === "expense"}" data-action="pick-txn-type" data-val="expense">${t("seg_expense")}</button>
-        <button type="button" class="seg-btn" data-active="${type === "income"}" data-action="pick-txn-type" data-val="income">${t("seg_income")}</button>
-      </div>
-      <div class="field" style="margin-top:18px;">
-        <label>${t("field_amount")}</label>
-        <input type="number" name="amount" inputmode="numeric" min="0" required value="${editing?.amount ?? ""}" placeholder="0">
-      </div>
-      <div class="field" style="margin-top:14px;">
-        <label>${t("field_category")}</label>
-        <div class="chip-row" id="txn-cat-row" style="padding:0;">
-          ${cats.map((c) => `<button type="button" class="chip" data-active="${cat === c}" data-action="pick-txn-cat" data-val="${c}">${escapeHtml(c)}</button>`).join("")}
-        </div>
-      </div>
-      <div class="field" style="margin-top:14px;">
-        <label>${t("field_account")}</label>
-        <select name="accountId">
-          ${state.accounts.map((a) => `<option value="${a.id}" ${(editing?.accountId || state.accounts[0].id) === a.id ? "selected" : ""}>${escapeHtml(a.name)}</option>`).join("")}
-        </select>
-      </div>
-      <div class="field" style="margin-top:14px;">
-        <label>${t("field_date")}</label>
-        <input type="date" name="date" required value="${editing?.date || todayISO()}">
-      </div>
-      <div class="field" style="margin-top:14px;">
-        <label>${t("field_memo_opt")}</label>
-        <input type="text" name="memo" value="${escapeHtml(editing?.memo || "")}" placeholder="${t("ph_txn_memo")}">
-      </div>
-      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_save")}</button>
-      ${editing ? `<button type="button" class="danger-btn" style="margin-top:10px;" data-action="delete-txn" data-id="${editing.id}">${t("btn_delete")}</button>` : ""}
-    </form>
-  `);
-  document.getElementById("txn-form").addEventListener("submit", onSubmitTxn);
-}
-
-function onSubmitTxn(e) {
-  e.preventDefault();
-  const form = e.target;
-  const fd = new FormData(form);
-  const id = form.dataset.txnId;
-  const activeCat = form.querySelector('#txn-cat-row [data-active="true"]');
-  const payload = {
-    type: form.dataset.type,
-    amount: Math.abs(Number(fd.get("amount")) || 0),
-    category: activeCat ? activeCat.dataset.val : (form.dataset.type === "income" ? INCOME_CATS[0] : EXPENSE_CATS[0]),
-    accountId: fd.get("accountId"),
-    date: fd.get("date"),
-    memo: fd.get("memo").trim(),
-  };
-  if (!payload.amount || !payload.accountId) return;
-
-  if (id) Object.assign(txnById(id), payload);
-  else state.transactions.push({ id: uid(), createdAt: Date.now(), ...payload });
-  saveState();
-  closeSheet();
-  render();
-  showToast(id ? t("toast_txn_updated") : t("toast_txn_added"));
-}
-
-function deleteTxn(id) {
-  state.transactions = state.transactions.filter((t) => t.id !== id);
-  saveState(); closeSheet(); render(); showToast(t("toast_txn_deleted"));
-}
-
-/* ---------------- modal: account ---------------- */
-
-function openAccountModal(accountId) {
-  const editing = accountId ? accountById(accountId) : null;
-  const type = editing?.type || ACCOUNT_TYPES[0];
-  const currency = editing?.currency || BASE_CURRENCY;
-  const isForeign = currency !== BASE_CURRENCY;
-  openSheet(`
-    <div class="sheet-handle"></div>
-    <div class="sheet-title-row">
-      <h2>${editing ? t("account_edit") : t("account_new")}</h2>
-      <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    </div>
-    <form id="account-form" data-id="${editing ? editing.id : ""}" data-type="${type}">
-      <div class="field">
-        <label>${t("field_name")}</label>
-        <input type="text" name="name" required value="${escapeHtml(editing?.name || "")}" placeholder="${t("ph_account_name")}">
-      </div>
-      <div class="field" style="margin-top:14px;">
-        <label>${t("field_acct_type")}</label>
-        <div class="seg" id="acct-type-seg">
-          ${ACCOUNT_TYPES.map((at) => `<button type="button" class="seg-btn small" data-active="${type === at}" data-action="pick-acct-type" data-val="${at}">${at}</button>`).join("")}
-        </div>
-      </div>
-      <div class="two-col" style="margin-top:14px;">
-        <div class="field">
-          <label>${t("field_currency")}</label>
-          <select name="currency" id="acct-currency-select">
-            ${CURRENCY_PRESETS.map((c) => `<option value="${c.code}" ${currency === c.code ? "selected" : ""}>${c.symbol} ${c.name}</option>`).join("")}
-          </select>
-        </div>
-        <div class="field">
-          <label>${t("field_start_balance")}</label>
-          <input type="number" name="startBalance" inputmode="numeric" value="${editing?.startBalance ?? 0}">
-        </div>
-      </div>
-      <div class="hint">${t("acct_hint")}</div>
-      <div class="field" id="acct-rate-field" style="margin-top:14px; ${isForeign ? "" : "display:none;"}">
-        <label id="acct-rate-label">${t("field_rate", { code: currency, base: BASE_CURRENCY })}</label>
-        <input type="number" name="rate" inputmode="decimal" step="0.01" min="0" value="${state.settings.exchangeRates[currency] ?? ""}" placeholder="0.00">
-        <div class="hint">${t("rate_hint")}</div>
-      </div>
-      <button type="submit" class="primary-btn" style="margin-top:18px;">${t("btn_save")}</button>
-      ${editing ? `<button type="button" class="danger-btn" style="margin-top:10px;" data-action="delete-account" data-id="${editing.id}">${t("btn_delete")}</button>` : ""}
-    </form>
-  `);
-  document.getElementById("acct-currency-select").addEventListener("change", (e) => {
-    const code = e.target.value;
-    const field = document.getElementById("acct-rate-field");
-    field.style.display = code === BASE_CURRENCY ? "none" : "";
-    document.getElementById("acct-rate-label").textContent = t("field_rate", { code, base: BASE_CURRENCY });
-    field.querySelector("input").value = state.settings.exchangeRates[code] ?? "";
-  });
-  document.getElementById("account-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const id = e.target.dataset.id;
-    const currency = fd.get("currency") || BASE_CURRENCY;
-    const payload = { name: fd.get("name").trim(), type: e.target.dataset.type, startBalance: Number(fd.get("startBalance")) || 0, currency };
-    if (!payload.name) return;
-    if (currency !== BASE_CURRENCY) {
-      const rate = Number(fd.get("rate"));
-      if (rate > 0) state.settings.exchangeRates[currency] = rate;
-    }
-    if (id) Object.assign(accountById(id), payload);
-    else state.accounts.push({ id: uid(), ...payload });
-    saveState(); closeSheet(); render(); showToast(t("toast_saved"));
-  });
-}
-
-function deleteAccount(id) {
-  if (state.accounts.length <= 1) { showToast(t("toast_min_account")); return; }
-  state.accounts = state.accounts.filter((a) => a.id !== id);
-  state.transactions = state.transactions.filter((t) => t.accountId !== id);
-  saveState(); closeSheet(); render(); showToast(t("toast_account_deleted"));
-}
-
 /* ---------------- modal: diary ---------------- */
 
 function recordTextLabel(cat) { return cat === "meditation" ? t("field_meditation_text") : t("field_content"); }
@@ -2500,6 +2343,7 @@ function deleteGoal(id) {
 /* ---------------- modal: checklist item (bucket list / study) ---------------- */
 
 function openChecklistModal(list, itemId) {
+  const meta = CHECKLIST_META[list];
   const isStudy = list === "study";
   const editing = itemId ? state.checklists.find((c) => c.id === itemId) : null;
   const subject = editing?.subject || (isStudy && checklistSubjectTab !== "all" ? checklistSubjectTab : (state.studySubjects[0]?.id || ""));
@@ -2507,13 +2351,13 @@ function openChecklistModal(list, itemId) {
   openSheet(`
     <div class="sheet-handle"></div>
     <div class="sheet-title-row">
-      <h2>${editing ? t(isStudy ? "study_edit" : "bucket_edit") : t(isStudy ? "study_new" : "bucket_new")}</h2>
+      <h2>${editing ? t(meta.editKey) : t(meta.newKey)}</h2>
       <button class="sheet-close" data-action="close-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <form id="checklist-form" data-list="${list}" data-id="${editing ? editing.id : ""}" data-subject="${subject}">
       <div class="field">
         <label>${t("field_title")}</label>
-        <input type="text" name="title" required value="${escapeHtml(editing?.title || "")}" placeholder="${t(isStudy ? "ph_study_title" : "ph_bucket_title")}">
+        <input type="text" name="title" required value="${escapeHtml(editing?.title || "")}" placeholder="${t(meta.phKey)}">
       </div>
       ${isStudy ? `
       <div class="field" style="margin-top:14px;">
@@ -2550,7 +2394,7 @@ function openChecklistModal(list, itemId) {
     saveState();
     closeSheet();
     render();
-    showToast(id ? t("toast_saved") : t(isStudy ? "toast_study_added" : "toast_bucket_added"));
+    showToast(id ? t("toast_saved") : t(meta.addedKey));
   });
 }
 
@@ -2898,7 +2742,8 @@ document.addEventListener("click", (e) => {
     }
     case "pick-photo": document.getElementById("attach-input").click(); break;
     case "remove-photo": pendingAttachment = null; document.getElementById("attach-area").innerHTML = renderAttachArea(); break;
-    case "select-date": {
+    case "select-date": selectedDate = el.dataset.date; render(); break;
+    case "goto-week-of-date": {
       selectedDate = el.dataset.date;
       weekCursor = mondayOf(selectedDate);
       state.settings.calendarMode = "week";
@@ -2951,7 +2796,6 @@ document.addEventListener("click", (e) => {
 
     case "goto-hub": switchView("hub"); break;
     case "goto-report": switchView("report"); break;
-    case "goto-money": switchView("money"); break;
     case "goto-diary": recordsTab = "all"; switchView("diary"); break;
     case "goto-goals": switchView("goals"); break;
     case "open-add-goal": openGoalModal(null); break;
@@ -2964,6 +2808,13 @@ document.addEventListener("click", (e) => {
     case "open-checklist-item": openChecklistModal(el.dataset.list, el.dataset.id); break;
     case "toggle-checklist-done": { e.stopPropagation(); toggleChecklistDone(el.dataset.id); break; }
     case "delete-checklist-item": deleteChecklistItem(el.dataset.id); break;
+    case "goto-habits": switchView("habits"); break;
+    case "goto-todo": switchView("todo"); break;
+    case "open-add-habit": openHabitModal(null); break;
+    case "open-habit": openHabitModal(el.dataset.id); break;
+    case "toggle-habit-today": { e.stopPropagation(); toggleHabitToday(el.dataset.id); break; }
+    case "delete-habit": deleteHabit(el.dataset.id); break;
+    case "pick-habit-range": { state.settings.habitDashRange = el.dataset.val; saveState(); render(); break; }
     case "pick-study-subject": {
       document.getElementById("checklist-form").dataset.subject = el.dataset.val;
       document.querySelectorAll("#study-subject-seg .seg-btn").forEach((b) => b.dataset.active = String(b === el));
@@ -2992,34 +2843,6 @@ document.addEventListener("click", (e) => {
       break;
     }
 
-    case "money-prev": case "money-next": {
-      const [y, m] = moneyCursor.split("-").map(Number);
-      const d = new Date(y, m - 1 + (action === "money-next" ? 1 : -1), 1);
-      moneyCursor = `${d.getFullYear()}-${pad2(d.getMonth() + 1)}`;
-      render(); break;
-    }
-    case "open-txn": openTxnModal(el.dataset.id); break;
-    case "delete-txn": deleteTxn(el.dataset.id); break;
-    case "pick-txn-type": {
-      const form = document.getElementById("txn-form");
-      form.dataset.type = el.dataset.val;
-      document.querySelectorAll('#txn-form > .seg:first-of-type .seg-btn').forEach((b) => b.dataset.active = String(b === el));
-      const cats = el.dataset.val === "income" ? INCOME_CATS : EXPENSE_CATS;
-      document.getElementById("txn-cat-row").innerHTML = cats.map((c, i) => `<button type="button" class="chip" data-active="${i === 0}" data-action="pick-txn-cat" data-val="${c}">${escapeHtml(c)}</button>`).join("");
-      break;
-    }
-    case "pick-txn-cat": {
-      document.querySelectorAll("#txn-cat-row .chip").forEach((b) => b.dataset.active = String(b === el));
-      break;
-    }
-    case "open-add-account": openAccountModal(null); break;
-    case "open-account": openAccountModal(el.dataset.id); break;
-    case "delete-account": deleteAccount(el.dataset.id); break;
-    case "pick-acct-type": {
-      document.getElementById("account-form").dataset.type = el.dataset.val;
-      document.querySelectorAll("#acct-type-seg .seg-btn").forEach((b) => b.dataset.active = String(b === el));
-      break;
-    }
     case "open-add-diary": openDiaryModal(null); break;
     case "open-diary": openDiaryModal(el.dataset.id); break;
     case "delete-diary": deleteDiary(el.dataset.id); break;
@@ -3031,13 +2854,7 @@ document.addEventListener("click", (e) => {
 });
 
 document.addEventListener("change", (e) => {
-  if (e.target.dataset.action === "set-rate") {
-    const rate = Number(e.target.value);
-    if (rate > 0) state.settings.exchangeRates[e.target.dataset.code] = rate;
-    else delete state.settings.exchangeRates[e.target.dataset.code];
-    saveState();
-    render();
-  } else if (e.target.dataset.action === "rename-category") {
+  if (e.target.dataset.action === "rename-category") {
     const cat = catById(e.target.dataset.id);
     const name = e.target.value.trim();
     if (name) cat.name = name; else e.target.value = cat.name;
@@ -3048,11 +2865,12 @@ document.addEventListener("change", (e) => {
 
 document.querySelectorAll(".nav-btn").forEach((b) => b.addEventListener("click", () => switchView(b.dataset.view)));
 document.getElementById("btn-add-task").addEventListener("click", () => {
-  if (currentView === "money") openTxnModal(null);
-  else if (currentView === "diary") openDiaryModal(null);
+  if (currentView === "diary") openDiaryModal(null);
   else if (currentView === "goals") openGoalModal(null);
   else if (currentView === "bucketlist") openChecklistModal("bucket", null);
   else if (currentView === "study") openChecklistModal("study", null);
+  else if (currentView === "habits") openHabitModal(null);
+  else if (currentView === "todo") openChecklistModal("todo", null);
   else openTaskModal(null);
 });
 
