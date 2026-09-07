@@ -1650,10 +1650,21 @@ function onSubmitTask(e) {
   };
   if (!payload.title) return;
 
+  const willMaterialize = recurring && (recurFreq !== "custom" || recurWeekdays.length);
+
   if (id) {
     const t = taskById(id);
+    const hadSiblingsBefore = t.seriesId && state.tasks.some((x) => x.id !== t.id && x.seriesId === t.seriesId);
     Object.assign(t, payload);
-  } else if (recurring && (recurFreq !== "custom" || recurWeekdays.length)) {
+    // Repeat was just turned on (or changed) on a task that isn't already part of a
+    // materialized series: generate the rest of the occurrences alongside it.
+    if (willMaterialize && !hadSiblingsBefore) {
+      for (const occDate of expandRecurringDates(dueDate, recurring)) {
+        if (occDate === dueDate) continue;
+        state.tasks.push({ ...payload, id: uid(), done: false, attachment: null, createdAt: Date.now(), dueDate: occDate });
+      }
+    }
+  } else if (willMaterialize) {
     for (const occDate of expandRecurringDates(dueDate, recurring)) {
       state.tasks.push({ id: uid(), done: false, createdAt: Date.now(), ...payload, dueDate: occDate });
     }
