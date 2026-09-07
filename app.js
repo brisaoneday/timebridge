@@ -955,7 +955,7 @@ function renderCalendar() {
   return modeToggle + (mode === "week" ? renderWeekView() : renderMonthView());
 }
 
-const WK_HOUR_H = 48; // px per hour row in the week grid
+const WK_HOUR_H = 40; // px per hour row in the week grid
 
 function hourLabelHM(h, m) {
   const opts = m === 0
