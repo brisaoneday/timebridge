@@ -108,12 +108,14 @@ const I18N = {
     field_dept: "지파 / 부서 (선택)", ph_dept: "예: 전체지파, 1지파, 시설관리팀",
     field_due: "마감일", field_date: "날짜", field_priority: "우선순위",
     prio_high: "상", prio_med: "중", prio_low: "하",
-    field_recur: "반복", recur_none: "안 함", recur_daily: "매일", recur_weekly: "매주",
-    recur_hint: "완료 처리하면 다음 날짜의 새 업무가 자동으로 생겨요. 완료를 이어갈수록 연속 기록이 쌓여요.",
+    field_recur: "반복", recur_none: "안 함", recur_daily: "매일", recur_weekly: "매주", recur_custom: "요일 선택",
+    recur_hint: "설정한 날짜까지 반복 업무가 한 번에 모두 생성돼요.",
+    recur_weekday_label: "반복할 요일", field_recur_until: "종료일 (선택)",
+    recur_until_hint: "비워두면 6개월간 반복돼요.",
     field_start_time: "시작 시간 (선택)", field_end_time: "종료 시간 (선택)", field_tz_origin: "이 시간 기준",
     tz_origin_hint: "다른 시간대 기준으로 통보받은 시간을 그대로 입력하면, 홈 시간대로 자동 변환해서 저장해요.",
     task_time_dual: "{gt} · {label} {kr}",
-    recur_daily_label: "매일 반복", recur_weekly_label: "매주 반복", streak_suffix: " · {n}일째",
+    recur_daily_label: "매일 반복", recur_weekly_label: "매주 반복", recur_custom_label: "{days} 반복", streak_suffix: " · {n}일째",
     field_notes: "메모", ph_notes: "참고할 내용을 적어두세요",
     field_photo: "사진 첨부", photo_add: "사진 추가", photo_change: "바꾸기", photo_remove: "제거",
     notif_task_hint: "알림은 앱을 열어둘 때 마감 임박 업무를 보여줘요. 설정에서 켤 수 있어요.",
@@ -208,12 +210,14 @@ const I18N = {
     field_dept: "Tribe / Department (optional)", ph_dept: "e.g., All tribes, Tribe 1, Facilities",
     field_due: "Due date", field_date: "Date", field_priority: "Priority",
     prio_high: "High", prio_med: "Med", prio_low: "Low",
-    field_recur: "Repeat", recur_none: "None", recur_daily: "Daily", recur_weekly: "Weekly",
-    recur_hint: "Completing it creates the next occurrence automatically. Keep completing it to build a streak.",
+    field_recur: "Repeat", recur_none: "None", recur_daily: "Daily", recur_weekly: "Weekly", recur_custom: "Custom days",
+    recur_hint: "All occurrences up to the end date are created at once.",
+    recur_weekday_label: "Repeat on", field_recur_until: "End date (optional)",
+    recur_until_hint: "If left blank, it repeats for 6 months.",
     field_start_time: "Start time (optional)", field_end_time: "End time (optional)", field_tz_origin: "This time is in",
     tz_origin_hint: "Enter the time exactly as told to you in the other timezone — it's auto-converted and saved in your home timezone.",
     task_time_dual: "{gt} · {label} {kr}",
-    recur_daily_label: "Daily", recur_weekly_label: "Weekly", streak_suffix: " · Day {n}",
+    recur_daily_label: "Daily", recur_weekly_label: "Weekly", recur_custom_label: "{days}", streak_suffix: " · Day {n}",
     field_notes: "Notes", ph_notes: "Add anything worth remembering",
     field_photo: "Photo", photo_add: "Add photo", photo_change: "Change", photo_remove: "Remove",
     notif_task_hint: "Notifications surface tasks due soon while the app is open. Turn them on in Settings.",
@@ -308,12 +312,14 @@ const I18N = {
     field_dept: "Tribu / Departamento (opcional)", ph_dept: "Ej., Todas las tribus, Tribu 1, Instalaciones",
     field_due: "Fecha límite", field_date: "Fecha", field_priority: "Prioridad",
     prio_high: "Alta", prio_med: "Media", prio_low: "Baja",
-    field_recur: "Repetir", recur_none: "No", recur_daily: "Diario", recur_weekly: "Semanal",
-    recur_hint: "Al completarla se crea automáticamente la siguiente. Completarla seguido acumula una racha.",
+    field_recur: "Repetir", recur_none: "No", recur_daily: "Diario", recur_weekly: "Semanal", recur_custom: "Días específicos",
+    recur_hint: "Se crean de una vez todas las repeticiones hasta la fecha de fin.",
+    recur_weekday_label: "Se repite en", field_recur_until: "Fecha de fin (opcional)",
+    recur_until_hint: "Si se deja vacío, se repite durante 6 meses.",
     field_start_time: "Hora de inicio (opcional)", field_end_time: "Hora de fin (opcional)", field_tz_origin: "Esta hora es de",
     tz_origin_hint: "Escribe la hora tal como te la dijeron en el otro huso horario — se convierte y guarda automáticamente en tu huso horario base.",
     task_time_dual: "{gt} · {label} {kr}",
-    recur_daily_label: "Diario", recur_weekly_label: "Semanal", streak_suffix: " · Día {n}",
+    recur_daily_label: "Diario", recur_weekly_label: "Semanal", recur_custom_label: "{days}", streak_suffix: " · Día {n}",
     field_notes: "Notas", ph_notes: "Anota algo que quieras recordar",
     field_photo: "Foto", photo_add: "Agregar foto", photo_change: "Cambiar", photo_remove: "Quitar",
     notif_task_hint: "Las notificaciones muestran tareas próximas a vencer mientras la app está abierta. Actívalas en Ajustes.",
@@ -712,22 +718,27 @@ function shouldGroupByDept() {
 
 function recurringLabel(task) {
   if (!task.recurring) return "";
-  return task.recurring.freq === "daily" ? t("recur_daily_label") : t("recur_weekly_label");
+  if (task.recurring.freq === "daily") return t("recur_daily_label");
+  if (task.recurring.freq === "custom") {
+    const days = (task.recurring.weekdays || []).slice().sort().map(weekdayLabel).join(",");
+    return t("recur_custom_label", { days });
+  }
+  return t("recur_weekly_label");
 }
 
 // Streak = consecutive completed instances of a recurring series, walking
 // back one interval at a time from this instance (inclusive if it's done).
 function computeStreak(t) {
   if (!t.recurring || !t.seriesId) return 0;
-  const step = t.recurring.freq === "daily" ? 1 : 7;
-  const byDate = new Map(state.tasks.filter((x) => x.seriesId === t.seriesId).map((x) => [x.dueDate, x]));
+  const series = state.tasks
+    .filter((x) => x.seriesId === t.seriesId)
+    .sort((a, b) => (a.dueDate < b.dueDate ? -1 : a.dueDate > b.dueDate ? 1 : 0));
+  const idx = series.findIndex((x) => x.id === t.id);
+  if (idx === -1) return 0;
   let streak = 0;
-  let cursor = t.done ? t.dueDate : addDaysISO(t.dueDate, -step);
-  while (true) {
-    const inst = byDate.get(cursor);
-    if (!inst || !inst.done) break;
+  for (let i = t.done ? idx : idx - 1; i >= 0; i--) {
+    if (!series[i].done) break;
     streak++;
-    cursor = addDaysISO(cursor, -step);
   }
   return streak;
 }
@@ -1489,6 +1500,9 @@ function openTaskModal(taskId) {
 
   const recur = editing?.recurring?.freq || "none";
   const recurSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${recur === val}" data-action="pick-recur" data-val="${val}">${label}</button>`;
+  const recurWeekdays = editing?.recurring?.weekdays || [];
+  const weekdayBtn = (dow) => `<button type="button" class="seg-btn small" data-active="${recurWeekdays.includes(dow)}" data-action="toggle-weekday" data-dow="${dow}">${weekdayLabel(dow)}</button>`;
+  const recurUntil = editing?.recurring?.until || "";
 
   const tzOrigin = "HOME";
   const tzOriginSeg = (val, label) => `<button type="button" class="seg-btn small" data-active="${tzOrigin === val}" data-action="pick-tz-origin" data-val="${val}">${label}</button>`;
@@ -1536,8 +1550,17 @@ function openTaskModal(taskId) {
       </div>
       <div class="field" style="margin-top:14px;">
         <label>${t("field_recur")}</label>
-        <div class="seg" id="recur-seg">${recurSeg("none", t("recur_none"))}${recurSeg("daily", t("recur_daily"))}${recurSeg("weekly", t("recur_weekly"))}</div>
+        <div class="seg" id="recur-seg">${recurSeg("none", t("recur_none"))}${recurSeg("daily", t("recur_daily"))}${recurSeg("weekly", t("recur_weekly"))}${recurSeg("custom", t("recur_custom"))}</div>
         <div class="hint">${t("recur_hint")}</div>
+        <div id="recur-weekday-row" style="margin-top:8px;display:${recur === "custom" ? "block" : "none"};">
+          <label>${t("recur_weekday_label")}</label>
+          <div class="seg" id="weekday-seg">${[0,1,2,3,4,5,6].map(weekdayBtn).join("")}</div>
+        </div>
+        <div id="recur-until-row" style="margin-top:10px;display:${recur !== "none" ? "block" : "none"};">
+          <label>${t("field_recur_until")}</label>
+          <input type="date" name="recurUntil" value="${recurUntil}">
+          <div class="hint">${t("recur_until_hint")}</div>
+        </div>
       </div>
       <div class="field" style="margin-top:14px;">
         <label>${t("field_notes")}</label>
@@ -1559,6 +1582,7 @@ function openTaskModal(taskId) {
 
   document.getElementById("task-form").dataset.categoryId = editing?.categoryId || state.categories[0].id;
   document.getElementById("task-form").dataset.recur = recur;
+  document.getElementById("task-form").dataset.weekdays = recurWeekdays.join(",");
   document.getElementById("task-form").dataset.seriesId = editing?.seriesId || "";
   document.getElementById("task-form").dataset.tzOrigin = tzOrigin;
   document.getElementById("attach-input").addEventListener("change", async (e) => {
@@ -1592,7 +1616,11 @@ function onSubmitTask(e) {
   const priority = form.querySelector('#prio-seg [data-active="true"]')?.dataset.val || "med";
 
   const recurFreq = form.dataset.recur || "none";
-  const recurring = recurFreq === "none" ? null : { freq: recurFreq };
+  const recurWeekdays = recurFreq === "custom"
+    ? (form.dataset.weekdays || "").split(",").filter(Boolean).map(Number)
+    : null;
+  const recurUntil = fd.get("recurUntil") || null;
+  const recurring = recurFreq === "none" ? null : { freq: recurFreq, weekdays: recurWeekdays, until: recurUntil };
   const seriesId = recurring ? (form.dataset.seriesId || uid()) : null;
 
   let dueDate = fd.get("dueDate");
@@ -1625,6 +1653,10 @@ function onSubmitTask(e) {
   if (id) {
     const t = taskById(id);
     Object.assign(t, payload);
+  } else if (recurring && (recurFreq !== "custom" || recurWeekdays.length)) {
+    for (const occDate of expandRecurringDates(dueDate, recurring)) {
+      state.tasks.push({ id: uid(), done: false, createdAt: Date.now(), ...payload, dueDate: occDate });
+    }
   } else {
     state.tasks.push({ id: uid(), done: false, createdAt: Date.now(), ...payload });
   }
@@ -1634,11 +1666,38 @@ function onSubmitTask(e) {
   showToast(id ? t("toast_task_updated") : t("toast_task_added"));
 }
 
+// Materializes every occurrence date (inclusive of startDate) for a recurring rule,
+// capped at an explicit "until" or a default 180-day window (hard-capped at 366 days)
+// so a series can never grow unbounded.
+function expandRecurringDates(startDate, recurring) {
+  const startDow = new Date(startDate + "T00:00:00").getDay();
+  const hardCap = addDaysISO(startDate, 366);
+  let until = recurring.until || addDaysISO(startDate, 180);
+  if (until > hardCap) until = hardCap;
+
+  const dates = [];
+  let cursor = startDate;
+  while (cursor <= until) {
+    const dow = new Date(cursor + "T00:00:00").getDay();
+    const matches =
+      recurring.freq === "daily" ? true :
+      recurring.freq === "weekly" ? dow === startDow :
+      recurring.freq === "custom" ? recurring.weekdays.includes(dow) :
+      false;
+    if (matches) dates.push(cursor);
+    cursor = addDaysISO(cursor, 1);
+  }
+  return dates;
+}
+
 function toggleTaskDone(id) {
   const t = taskById(id);
   if (!t) return;
   t.done = !t.done;
-  if (t.done && t.recurring) {
+  // Legacy series created before recurring tasks were fully materialized up front:
+  // they have no "weekdays"/"until" keys, so keep spawning the next instance lazily.
+  const isLegacySeries = t.recurring && t.recurring.weekdays === undefined && t.recurring.until === undefined;
+  if (t.done && isLegacySeries) {
     const step = t.recurring.freq === "daily" ? 1 : 7;
     state.tasks.push({
       ...t, id: uid(), done: false, attachment: null,
@@ -2337,8 +2396,22 @@ document.addEventListener("click", (e) => {
       break;
     }
     case "pick-recur": {
-      document.getElementById("task-form").dataset.recur = el.dataset.val;
+      const val = el.dataset.val;
+      document.getElementById("task-form").dataset.recur = val;
       document.querySelectorAll("#recur-seg .seg-btn").forEach((b) => b.dataset.active = String(b === el));
+      const weekdayRow = document.getElementById("recur-weekday-row");
+      if (weekdayRow) weekdayRow.style.display = val === "custom" ? "block" : "none";
+      const untilRow = document.getElementById("recur-until-row");
+      if (untilRow) untilRow.style.display = val !== "none" ? "block" : "none";
+      break;
+    }
+    case "toggle-weekday": {
+      const form = document.getElementById("task-form");
+      const dow = el.dataset.dow;
+      const cur = new Set((form.dataset.weekdays || "").split(",").filter(Boolean));
+      if (cur.has(dow)) cur.delete(dow); else cur.add(dow);
+      form.dataset.weekdays = Array.from(cur).join(",");
+      el.dataset.active = String(cur.has(dow));
       break;
     }
     case "pick-tz-origin": {
