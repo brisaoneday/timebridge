@@ -8,7 +8,7 @@
   --text-faint: oklch(60% 0.02 260);
   --chip-bg: oklch(93% 0.01 80);
   --ink: oklch(22% 0.02 260);
-  --ink-soft: oklch(28% 0.03 260);
+  --ink-soft: oklch(42% 0.035 260);
   --on-ink: oklch(98% 0.005 80);
 
   /* filled/primary surface (FAB, primary button, active chip) - flips in dark mode */
