@@ -465,22 +465,10 @@ function defaultState() {
     ],
     filter: ["admin", "personal"],
     tasks: [],
-    departments: [
-      { id: uid(), name: "1지파", contact: "", status: "제출완료", dueDate: todayISO() },
-      { id: uid(), name: "2지파", contact: "", status: "제출완료", dueDate: todayISO() },
-      { id: uid(), name: "3지파", contact: "", status: "미제출", dueDate: addDaysISO(todayISO(), 1) },
-      { id: uid(), name: "4지파", contact: "", status: "검토중", dueDate: addDaysISO(todayISO(), 2) },
-      { id: uid(), name: "5지파", contact: "", status: "제출완료", dueDate: todayISO() },
-      { id: uid(), name: "6지파", contact: "", status: "미제출", dueDate: addDaysISO(todayISO(), 3) },
-      { id: uid(), name: "시설관리팀", contact: "", status: "제출완료", dueDate: todayISO() },
-    ],
+    departments: [],
     glossary: {
       admin: [
         { id: uid(), term: "지파", def: "교회 내 편성된 소그룹 단위. 각 지파마다 담당 전도사가 있고, 정기 활동·헌금 보고를 행정서무 쪽으로 취합해서 올려요." },
-        { id: uid(), term: "십일조", def: "교인이 수입의 10분의 1을 정기적으로 드리는 헌금. 지파별 취합 후 회계팀과 대조." },
-        { id: uid(), term: "전도사", def: "각 지파를 담당하는 사역자 직분. 보고서·회신은 보통 이 직분 앞으로 요청." },
-        { id: uid(), term: "등록교인", def: "정식 등록 절차를 마친 교인. 명부·통계 보고 시 기준이 되는 인원." },
-        { id: uid(), term: "주보", def: "매주 예배 때 배포하는 안내 인쇄물. 발행 전 각 부서 공지사항 마감일 확인 필요." },
       ],
     },
     worldClocks: [
